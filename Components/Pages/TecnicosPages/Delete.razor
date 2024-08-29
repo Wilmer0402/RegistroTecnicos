@@ -1,0 +1,69 @@
+﻿@page "/Tecnicos/Delete/{TecnicosId:int}"
+@rendermode InteractiveServer
+@inject TecnicoService tecnicoService
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar Técnico</PageTitle>
+<EditForm Model="tecnicos" OnValidSubmit="EliminarTecnico">
+	<DataAnnotationsValidator />
+	<div class="card-shadow-lg">
+		<div class="card-header bg-primary text-white">
+			<h4><strong>Eliminar Tecnico</strong></h4>
+		</div>
+		<div class="card-body">
+			<h6><strong>¿¿Seguro que deseas eliminar este Técnico??</strong></h6>
+			<div class="mb-1"></div>
+			<p class="mb-0">Tecnico Id: @tecnicos.tecnicoId</p>
+			<div class="mb-1">
+				<p class="mb-0">Nombre Tecnico: @tecnicos.nombreTecnico</p>
+				<div class="mb-1">
+					<p class="mb-0"> Sueldo por hora: @tecnicos.sueldoHora</p>
+					<div class="mb-1">
+					</div>
+				</div>
+
+				<div class="card-footer">
+					<button type="button" class="btn btn-info text-white bi bi-arrow-90deg-left" @onclick=Volver> Volver</button>
+					<button type="button" class="btn btn-danger bi bi-trash" @onclick=EliminarTecnico> Eliminar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</EditForm>
+
+
+
+@code {
+
+	[Parameter]
+	public int TecnicosId { get; set; }
+	public Tecnicos tecnicos { get; set; } = new Tecnicos();
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (TecnicosId > 0)
+		{
+			tecnicos = (await tecnicoService.Buscar(TecnicosId));
+		}
+
+	}
+
+	public async Task EliminarTecnico()
+	{
+		var eliminar = await tecnicoService.Eliminar(tecnicos.tecnicoId);
+
+		if (eliminar)
+		{
+			Volver();
+		}
+
+	}
+
+	public void Volver()
+	{
+		navigation.NavigateTo("/Tecnicos/Index");
+	}
+
+
+
+}
