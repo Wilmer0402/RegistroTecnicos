@@ -5,7 +5,7 @@
 
 <PageTitle>Tecnicos</PageTitle>
 <div class="container">
-	<div class="card-header bg-info text-white">
+	<div class="card-header bg-danger text-white">
 		<h3 class="T&eacute;cnicos"><strong>Registro de Tecnicos</strong></h3>
 	</div>
 	<div class="row text-right">
@@ -21,11 +21,11 @@
 			<label for="valorFiltro" class="form-label"><strong>B&uacute;squeda</strong></label>
 			<div class="input-group">
 				<InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeholder="Buscar" />
-				<button @onclick="Buscar" class="btn btn-danger bi bi-search" type="button"> Buscar</button>
+				<button @onclick="Buscar" class="btn btn-info bi bi-search" type="button"> Buscar</button>
 			</div>
 		</div>
 		<div class="text-left">
-			<a href="/Tecnicos/Create" class="btn btn-danger bi bi-plus-square-fill"> Crear</a>
+			<a href="/Tecnicos/Create" class="btn btn-info bi bi-plus-square-fill"> Crear</a>
 		</div>
 	</div>
 
@@ -54,10 +54,10 @@
 							<a href="/Tecnicos/Details/@tecnico.tecnicoId" class="btn btn-info text-white bi bi-eye"></a>
 						</td>
 						<td class="text-center">
-							<a href="/Tecnicos/Edit/@tecnico.tecnicoId" class="btn btn-warning text-white bi bi-pencil-square"></a>
+							<a href="/Tecnicos/Edit/@tecnico.tecnicoId" class="btn btn-info text-white bi bi-pencil-square"></a>
 						</td>
 						<td class="text-center">
-							<a href="/Tecnicos/Delete/@tecnico.tecnicoId" class="btn btn-danger bi bi-trash"></a>
+							<a href="/Tecnicos/Delete/@tecnico.tecnicoId" class="btn btn-info bi bi-trash"></a>
 						</td>
 					</tr>
 				}
