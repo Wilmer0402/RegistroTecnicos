@@ -5,12 +5,12 @@
 
 <PageTitle>Tecnicos</PageTitle>
 <div class="container">
-	<div class="card-header bg-danger text-white">
-		<h3 class="T&eacute;cnicos"><strong>Registro de Tecnicos</strong></h3>
+	<div class="card-header bg-danger text-white text-center">
+		<h3 class="T&eacute;cnicos"><strong>Registro de Técnicos</strong></h3>
 	</div>
-	<div class="row text-right">
+	<div class="row">
 		<div class="col-md-3">
-			<label for="filtro" class="from label"><strong>Filtrar por:</strong></label>
+			<label for="filtro" class="form-label"><strong>Filtrar por:</strong></label>
 			<InputSelect id="filtro" class="form-select" @bind-Value="filtro">
 				<option value="id">ID</option>
 				<option value="Nombre">NombreTecnico</option>
@@ -24,12 +24,8 @@
 				<button @onclick="Buscar" class="btn btn-info bi bi-search" type="button"> Buscar</button>
 			</div>
 		</div>
-		<div class="text-left">
-			<a href="/Tecnicos/Create" class="btn btn-info bi bi-plus-square-fill"> Crear</a>
-		</div>
 	</div>
 
-	@*Body*@
 	<div class="card-body">
 		<table class="table table-light">
 			<thead class="table table-striped text-center table-bordered mt-3 bg-danger text-white">
@@ -64,13 +60,16 @@
 			</tbody>
 		</table>
 	</div>
+
+	<div class="row">
+		<div class="col text-right">
+			<!-- Clase para alinear a la derecha -->
+			<a href="/Tecnicos/Create" class="btn btn-info bi bi-plus-square-fill mt-3"> Crear</a>
+		</div>
+	</div>
 </div>
 
-
-
-
 @code {
-
 	public List<Tecnicos> tecnicos = new List<Tecnicos>();
 	public string filtro = "id";
 	public string valorFiltro = "";
@@ -109,7 +108,5 @@
 		{
 			tecnicos = await tecnicoService.Listar(async => true);
 		}
-
 	}
 }
-
