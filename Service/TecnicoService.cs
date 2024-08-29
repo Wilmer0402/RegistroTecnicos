@@ -1,60 +1,85 @@
 ﻿using RegistroTecnicos.DAL;
 using RegistroTecnicos.Models;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
+using System.Linq.Expressions;
+
 
 namespace RegistroTecnicos.Service
 {
+	public class TecnicoService
+	{
 
-    public class TecnicoService
-    {
-        private readonly Context _context;
+		private readonly Context _context;
+		public TecnicoService(Context context)
+		{
+			_context = context;
 
-        public TecnicoService(Context context)
-        {
-            _context = context;
-        }
+		}
 
-        public async Task<bool> Existe(int id)
-        {
-            return await _context.Tecnicos.AnyAsync(w => w.tecnicoId == id);
+		public async Task<bool> Existe(int id)
+		{
+			return await _context.Tecnicos.AnyAsync(w => w.tecnicoId == id);
+		}
 
-        }
+		public async Task<bool> Modificar(Tecnicos tecnico)
+		{
+			_context.Tecnicos.Update(tecnico);
+			return await _context.SaveChangesAsync() > 0;
+		}
+		public async Task<bool> Insertar(Tecnicos tecnico)
+		{
+			_context.Tecnicos.Add(tecnico);
+			return await _context.SaveChangesAsync() > 0;
 
-        public async Task<bool> Insertar(Tecnicos tecnicos)
-        {
-            _context.Tecnicos.Add(tecnicos);
-            return await _context.SaveChangesAsync() > 0;
-        }
+		}
 
-        public async Task<bool> Modificar(Tecnicos tecnicos)
-        {
-            _context.Update(tecnicos);
-            return await _context.SaveChangesAsync() > 0;
-        }
+		public async Task<bool> Guardar(Tecnicos tecnico)
+		{
+			if (!await Existe(tecnico.tecnicoId))
+				return await Insertar(tecnico);
+			return await Modificar(tecnico);
+		}
+		public async Task<bool> Eliminar(int id)
+		{
+			var Tecnicos = await _context.Tecnicos.FirstOrDefaultAsync(w => w.tecnicoId == id);
+			if (Tecnicos != null)
+			{
+				_context.Tecnicos.Remove(Tecnicos);
+				return await _context.SaveChangesAsync() > 0;
 
-        public async Task<bool> Eliminar(int id)
-        {
-            var tecnicos = await _context.Tecnicos.FirstOrDefaultAsync(w => w.tecnicoId == id);
-            return await _context.SaveChangesAsync() > 0;
+			}
 
-        }
+			return false;
 
-        public async Task<Tecnicos?> Buscar(int id)
-        {
-            return await _context.Tecnicos.AsNoTracking().
-                FirstOrDefaultAsync(w => w.tecnicoId == id);
-        }
+		}
 
-        public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> criterio)
-        {
-            return _context.Tecnicos.AsNoTracking()
-                .Where(criterio)
-                .ToList();
+		public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> pauta)
+		{
+			return _context.Tecnicos.AsNoTracking()
+				.Where(pauta)
+				.ToList();
 
-        }
-    }
+		}
+
+		public async Task<Tecnicos?> BuscarNombres(string nombre)
+		{
+			return await _context.Tecnicos.AsNoTracking()
+				.FirstOrDefaultAsync(w => w.nombreTecnico == nombre);
+
+		}
+
+		public async Task<Tecnicos> Buscar(int id)
+		{
+			return await _context.Tecnicos.AsNoTracking().
+				FirstOrDefaultAsync(w => w.tecnicoId == id);
+
+		}
+
+		public async Task<bool> ValidarTecnico(string nombre)
+		{
+			return await _context.Tecnicos.AnyAsync(t => t.nombreTecnico == nombre);
+		}
 
 
+	}
 }
