@@ -4,6 +4,16 @@
 @inject NavigationManager navigation
 
 <PageTitle>Eliminar Técnico</PageTitle>
+<style>
+	/* Aplica Times New Roman a todos los textos de la página */
+	body {
+		font-family: 'Times New Roman', Times, serif;
+	}
+
+	.card-header h4 {
+		font-family: 'Times New Roman', Times, serif; /* Cambia la fuente del encabezado */
+	}
+</style>
 <EditForm Model="tecnicos" OnValidSubmit="EliminarTecnico">
 	<DataAnnotationsValidator />
 	<div class="card-shadow-lg">
@@ -13,11 +23,11 @@
 		<div class="card-body">
 			<h6><strong>¿Seguro que deseas eliminar el Técnico Selecionado?</strong></h6>
 			<div class="mb-1"></div>
-			<p class="mb-0">Tecnico Id: @tecnicos.tecnicoId</p>
+			<p class="mb-0"><strong>Tecnico Id:</strong> @tecnicos.tecnicoId</p>
 			<div class="mb-1">
-				<p class="mb-0">Nombre Tecnico: @tecnicos.nombreTecnico</p>
+				<p class="mb-0"><strong>Nombre Tecnico:</strong> @tecnicos.nombreTecnico</p>
 				<div class="mb-1">
-					<p class="mb-0"> Sueldo por hora: @tecnicos.sueldoHora</p>
+					<p class="mb-0"><strong>Sueldo por Hora:</strong> @tecnicos.sueldoHora</p>
 					<div class="mb-1">
 					</div>
 				</div>
