@@ -5,14 +5,16 @@
 @inject NavigationManager navigation
 
 <PageTitle>Crear Nuevo Técnico</PageTitle>
-
-<!-- CSS personalizado para cambiar la tipografía -->
 <style>
+    /* Aplica Times New Roman a todos los textos de la página */
+    body {
+        font-family: 'Times New Roman', Times, serif;
+    }
+
     .card-header h1 {
         font-family: 'Times New Roman', Times, serif; /* Cambia la fuente del encabezado */
     }
 </style>
-
 <EditForm Model="tecnico" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
     <div class="container"></div>
