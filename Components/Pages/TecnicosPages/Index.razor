@@ -16,7 +16,7 @@
 </style>
 
 <div class="container">
-	<div class="card-header bg-danger text-white text-center">
+	<div class="card-header bg-success text-white text-center">
 		<div style="display: flex; align-items: center; justify-content: center;">
 			<!-- Icono izquierdo-->
 			<i class="bi bi-people-fill" style="font-size: 2rem;"></i>
@@ -42,14 +42,14 @@
 			<label for="valorFiltro" class="form-label"><strong>B&uacute;squeda</strong></label>
 			<div class="input-group">
 				<InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeholder="Buscar" />
-				<button @onclick="Buscar" class="btn btn-info bi bi-search" type="button"> Buscar</button>
+				<button @onclick="Buscar" class="btn btn-secondary bi bi-search" type="button"> Buscar</button>
 			</div>
 		</div>
 	</div>
 
 	<div class="card-body">
 		<table class="table table-light table-bordered">
-			<thead class="table table-striped text-center bg-danger text-white">
+			<thead class="table table-striped text-center bg-success text-white">
 				<tr>
 					<th>ID</th>
 					<th>Nombre Técnico</th>
@@ -68,13 +68,13 @@
 						<td class="text-center">@tecnico.sueldoHora</td>
 
 						<td class="text-center">
-							<a href="/Tecnicos/Details/@tecnico.tecnicoId" class="btn btn-info text-white bi bi-eye"></a>
+							<a href="/Tecnicos/Details/@tecnico.tecnicoId" class="btn btn-secondary text-white bi bi-eye"></a>
 						</td>
 						<td class="text-center">
-							<a href="/Tecnicos/Edit/@tecnico.tecnicoId" class="btn btn-info text-white bi bi-pencil-square"></a>
+							<a href="/Tecnicos/Edit/@tecnico.tecnicoId" class="btn btn-secondary text-white bi bi-pencil-square"></a>
 						</td>
 						<td class="text-center">
-							<a href="/Tecnicos/Delete/@tecnico.tecnicoId" class="btn btn-info bi bi-trash"></a>
+							<a href="/Tecnicos/Delete/@tecnico.tecnicoId" class="btn btn-secondary bi bi-trash"></a>
 						</td>
 					</tr>
 				}
@@ -85,7 +85,7 @@
 	<div class="row">
 		<div class="col text-end">
 			<!-- Clase para alinear a la derecha -->
-			<a href="/Tecnicos/Create" class="btn btn-info bi bi-plus-square-fill mt-3"> Crear</a>
+			<a href="/Tecnicos/Create" class="btn btn-secondary bi bi-plus-square-fill mt-3"> Crear</a>
 		</div>
 	</div>
 </div>
