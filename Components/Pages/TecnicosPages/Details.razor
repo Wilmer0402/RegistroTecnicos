@@ -6,6 +6,16 @@
 
 
 <PageTitle>Detalles Técnico</PageTitle>
+<style>
+	/* Aplica Times New Roman a todos los textos de la página */
+	body {
+		font-family: 'Times New Roman', Times, serif;
+	}
+
+	.card-header h5 {
+		font-family: 'Times New Roman', Times, serif; /* Cambia la fuente del encabezado */
+	}
+</style>
 <div class="container">
 	<div class="card shadow-lg">
 		@*Header*@
@@ -20,12 +30,12 @@
 		{
 			@*Datos*@
 			<div class="mb-1">
-				<p class="mb-0">Técnico Id: @tecnicos.tecnicoId</p>
+				<p class="mb-0"><strong>Técnico Id:</strong> @tecnicos.tecnicoId</p>
 				<div class="mb-1">
-					<p class="mb-0">Nombre del Técnico: @tecnicos.nombreTecnico</p>
+					<p class="mb-0"><strong>Nombre del Técnico:</strong> @tecnicos.nombreTecnico</p>
 				</div>
 				<div class="mb-1">
-					<p class="mb-0">Sueldo por hora: @tecnicos.sueldoHora</p>
+					<p class="mb-0"><strong>Sueldo por hora:</strong> @tecnicos.sueldoHora</p>
 				</div>
 			</div>
 
