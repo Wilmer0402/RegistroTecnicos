@@ -17,12 +17,12 @@
 <EditForm Model="tecnicos" OnValidSubmit="EliminarTecnico">
 	<DataAnnotationsValidator />
 	<div class="card-shadow-lg">
-		<div class="card-header bg-info text-white text-center" style="display: flex; align-items: center; justify-content: center;">
+		<div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
 			<i class="bi bi-trash" style="font-size: 2rem;"></i>
 			<h4 style="margin: 0 15px;"><strong>Eliminar Técnico:</strong></h4>
 		</div>
 		<div class="card-body">
-			<h6><strong>¿Seguro que deseas eliminar el Técnico Selecionado?</strong></h6>
+			<h5><strong>¿Seguro que deseas eliminar el Técnico Selecionado?</strong></h5>
 			<div class="mb-1"></div>
 			<p class="mb-0"><strong>Tecnico Id:</strong> @tecnicos.tecnicoId</p>
 			<div class="mb-1">
@@ -34,8 +34,8 @@
 				</div>
 
 				<div class="card-footer">
-					<button type="button" class="btn btn-info text-white bi bi-arrow-90deg-left" @onclick=Volver> Volver</button>
-					<button type="button" class="btn btn-danger bi bi-trash" @onclick=EliminarTecnico> Eliminar</button>
+					<button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick=Volver> Volver</button>
+					<button type="button" class="btn btn-success bi bi-trash" @onclick=EliminarTecnico> Eliminar</button>
 				</div>
 			</div>
 		</div>
