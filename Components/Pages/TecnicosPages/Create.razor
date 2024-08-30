@@ -19,8 +19,9 @@
     <DataAnnotationsValidator />
     <div class="container"></div>
     <div class="card shadow-lg">
-        <div class="card-header bg-info text-white text-center">
-            <h3><strong>Crear Nuevo Técnico</strong></h3>
+        <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-person-fill-add" style="font-size: 2rem;"></i>
+            <h4 style="margin: 0 15px;"><strong>Crear Nuevo Técnico:</strong></h4>
         </div>
         <div class="card-body">
             <label for="id" class="form-label"><strong>ID</strong></label>
@@ -35,8 +36,8 @@
             <ValidationMessage For="@(() => tecnico.sueldoHora)"></ValidationMessage>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-info text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
-            <button type="submit" class="btn btn-danger bi bi-floppy-fill">Guardar</button>
+            <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+            <button type="submit" class="btn btn-success bi bi-floppy-fill">Guardar</button>
         </div>
     </div>
 </EditForm>
