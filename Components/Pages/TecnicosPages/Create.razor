@@ -5,6 +5,14 @@
 @inject NavigationManager navigation
 
 <PageTitle>Crear Nuevo Técnico</PageTitle>
+
+<!-- CSS personalizado para cambiar la tipografía -->
+<style>
+    .card-header h1 {
+        font-family: 'Times New Roman', Times, serif; /* Cambia la fuente del encabezado */
+    }
+</style>
+
 <EditForm Model="tecnico" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
     <div class="container"></div>
@@ -36,17 +44,15 @@
 
     public async Task Crear()
     {
-        
         if (!await tecnicoService.Existe(tecnico.tecnicoId))
         {
-            
             await tecnicoService.Insertar(tecnico);
-            tecnico = new Tecnicos(); 
-            navigation.NavigateTo("/Tecnicos/Index"); 
+            tecnico = new Tecnicos();
+            navigation.NavigateTo("/Tecnicos/Index");
         }
         else
         {
-            
+            // Aquí puedes manejar el caso en que el técnico ya exista
         }
     }
 
