@@ -3,8 +3,10 @@
 @rendermode InteractiveServer
 @inject TecnicoService tecnicoService
 @inject NavigationManager navigation
+@inject IJSRuntime js
 
 <PageTitle>Crear Nuevo Técnico</PageTitle>
+
 <style>
     /* Aplica Times New Roman a todos los textos de la página */
     body {
@@ -15,6 +17,7 @@
         font-family: 'Times New Roman', Times, serif; /* Cambia la fuente del encabezado */
     }
 </style>
+
 <EditForm Model="tecnico" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
     <div class="container"></div>
@@ -25,7 +28,8 @@
         </div>
         <div class="card-body">
             <label for="id" class="form-label"><strong>ID</strong></label>
-            <InputNumber id="id" class="form-control" @bind-Value="tecnico.tecnicoId" readonly></InputNumber>
+            <InputNumber id="id" class="form-control" @bind-Value="tecnico.tecnicoId" @onchange="ValidarId"></InputNumber>
+            <ValidationMessage For="@(() => tecnico.tecnicoId)"></ValidationMessage>
 
             <label for="nombre" class="form-label"><strong>Nombre Técnico</strong></label>
             <InputText id="nombre" class="form-control" @bind-Value="tecnico.nombreTecnico"></InputText>
@@ -68,7 +72,16 @@
         }
         else
         {
-            // Manejar el caso donde ya existe un técnico con el mismo ID
+            await js.InvokeVoidAsync("alert", "El ID ya existe. Por favor, elija otro ID.");
+        }
+    }
+
+    public async Task ValidarId(ChangeEventArgs e)
+    {
+        var id = int.Parse(e.Value.ToString());
+        if (await tecnicoService.Existe(id))
+        {
+            await js.InvokeVoidAsync("alert", "El ID ya existe. Por favor, elija otro ID.");
         }
     }
 
@@ -82,4 +95,3 @@
         formattedSueldoHora = e.Value.ToString();
     }
 }
-
