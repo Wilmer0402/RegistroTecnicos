@@ -32,12 +32,19 @@
             <ValidationMessage For="@(() => tecnico.tecnicoId)"></ValidationMessage>
 
             <label for="nombre" class="form-label"><strong>Nombre Técnico</strong></label>
-            <InputText id="nombre" class="form-control" @bind-Value="tecnico.nombreTecnico"></InputText>
+            <InputText id="nombre" class="form-control" @bind-Value="tecnico.nombreTecnico" @onchange="ValidarNombre"></InputText>
             <ValidationMessage For="@(() => tecnico.nombreTecnico)"></ValidationMessage>
 
             <label for="sueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
             <InputText id="sueldoHora" class="form-control" @bind-Value="formattedSueldoHora" @oninput="OnSueldoHoraChanged"></InputText>
             <ValidationMessage For="@(() => tecnico.sueldoHora)"></ValidationMessage>
+
+            @if (!string.IsNullOrEmpty(mensajeError))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @mensajeError
+                </div>
+            }
         </div>
         <div class="card-footer">
             <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
@@ -48,6 +55,7 @@
 
 @code {
     public Tecnicos tecnico { get; set; } = new Tecnicos();
+    private string mensajeError { get; set; } = string.Empty;
 
     private string formattedSueldoHora
     {
@@ -64,15 +72,24 @@
 
     public async Task Crear()
     {
+        mensajeError = string.Empty; // Limpia el mensaje de error antes de intentar crear
+
         if (!await tecnicoService.Existe(tecnico.tecnicoId))
         {
-            await tecnicoService.Insertar(tecnico);
-            tecnico = new Tecnicos();
-            navigation.NavigateTo("/Tecnicos/Index");
+            if (!await tecnicoService.ExistePorNombre(tecnico.nombreTecnico))
+            {
+                await tecnicoService.Insertar(tecnico);
+                tecnico = new Tecnicos();
+                navigation.NavigateTo("/Tecnicos/Index");
+            }
+            else
+            {
+                mensajeError = "El nombre del técnico ya existe. Por favor, elija otro nombre.";
+            }
         }
         else
         {
-            await js.InvokeVoidAsync("alert", "El ID ya existe. Por favor, elija otro ID.");
+            mensajeError = "Error el ID ya existe. Por favor, elija otro ID.";
         }
     }
 
@@ -81,7 +98,16 @@
         var id = int.Parse(e.Value.ToString());
         if (await tecnicoService.Existe(id))
         {
-            await js.InvokeVoidAsync("alert", "El ID ya existe. Por favor, elija otro ID.");
+            await js.InvokeVoidAsync("alert", "Error el ID ya Existe. Por favor, elija otro ID.");
+        }
+    }
+
+    public async Task ValidarNombre(ChangeEventArgs e)
+    {
+        var nombre = e.Value.ToString();
+        if (await tecnicoService.ExistePorNombre(nombre))
+        {
+            await js.InvokeVoidAsync("alert", "El nombre del técnico ya existe. Por favor, elija otro nombre.");
         }
     }
 
@@ -95,3 +121,4 @@
         formattedSueldoHora = e.Value.ToString();
     }
 }
+
