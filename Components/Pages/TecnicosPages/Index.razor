@@ -65,7 +65,7 @@
 					<tr>
 						<td class="text-center">@tecnico.tecnicoId</td>
 						<td class="text-center">@tecnico.nombreTecnico</td>
-						<td class="text-center">@tecnico.sueldoHora</td>
+						<td class="text-center">@tecnico.sueldoHora.ToString("N2")</td> <!-- Aquí aplicamos el formato monetario -->
 
 						<td class="text-center">
 							<a href="/Tecnicos/Details/@tecnico.tecnicoId" class="btn btn-secondary text-white bi bi-eye"></a>

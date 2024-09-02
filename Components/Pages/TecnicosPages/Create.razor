@@ -32,7 +32,7 @@
             <ValidationMessage For="@(() => tecnico.nombreTecnico)"></ValidationMessage>
 
             <label for="sueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
-            <InputNumber id="sueldoHora" class="form-control" @bind-Value="tecnico.sueldoHora"></InputNumber>
+            <InputText id="sueldoHora" class="form-control" @bind-Value="formattedSueldoHora" @oninput="OnSueldoHoraChanged"></InputText>
             <ValidationMessage For="@(() => tecnico.sueldoHora)"></ValidationMessage>
         </div>
         <div class="card-footer">
@@ -45,6 +45,19 @@
 @code {
     public Tecnicos tecnico { get; set; } = new Tecnicos();
 
+    private string formattedSueldoHora
+    {
+        get => tecnico.sueldoHora.ToString("N2"); // Formatea el sueldo por hora como 23,568.00
+        set
+        {
+            var cleanValue = value.Replace(",", ""); // Remueve las comas para parsear
+            if (float.TryParse(cleanValue, out var result))
+            {
+                tecnico.sueldoHora = result;
+            }
+        }
+    }
+
     public async Task Crear()
     {
         if (!await tecnicoService.Existe(tecnico.tecnicoId))
@@ -55,7 +68,7 @@
         }
         else
         {
-            // Aquí puedes manejar el caso en que el técnico ya exista
+            // Manejar el caso donde ya existe un técnico con el mismo ID
         }
     }
 
@@ -63,4 +76,10 @@
     {
         navigation.NavigateTo("/Tecnicos/Index");
     }
+
+    private void OnSueldoHoraChanged(ChangeEventArgs e)
+    {
+        formattedSueldoHora = e.Value.ToString();
+    }
 }
+
