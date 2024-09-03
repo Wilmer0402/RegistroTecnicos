@@ -3,6 +3,7 @@ using RegistroTecnicos.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
+
 namespace RegistroTecnicos.Service
 {
     public class TecnicoService
@@ -49,11 +50,12 @@ namespace RegistroTecnicos.Service
             return false;
         }
 
-        public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> pauta)
+        public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> criterio)
         {
-            return _context.Tecnicos.AsNoTracking()
-                .Where(pauta)
-                .ToList();
+            return await _context.Tecnicos.
+                AsNoTracking()
+                .Where(criterio)
+                .ToListAsync();
         }
 
         public async Task<Tecnicos?> BuscarNombres(string nombre)
