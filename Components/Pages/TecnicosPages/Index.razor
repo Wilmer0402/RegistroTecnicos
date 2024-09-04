@@ -63,18 +63,18 @@
 				@foreach (var tecnico in tecnicos)
 				{
 					<tr>
-						<td class="text-center">@tecnico.tecnicoId</td>
-						<td class="text-center">@tecnico.nombreTecnico</td>
-						<td class="text-center">@tecnico.sueldoHora.ToString("N2")</td> <!-- Aquí aplicamos el formato monetario -->
+						<td class="text-center">@tecnico.TecnicoId</td>
+						<td class="text-center">@tecnico.NombresTecnico</td>
+						<td class="text-center">@tecnico.SueldoHora.ToString("N2")</td> <!-- Aquí aplicamos el formato monetario -->
 
 						<td class="text-center">
-							<a href="/Tecnicos/Details/@tecnico.tecnicoId" class="btn btn-secondary text-white bi bi-eye"></a>
+							<a href="/Tecnicos/Details/@tecnico.TecnicoId" class="btn btn-secondary text-white bi bi-eye"></a>
 						</td>
 						<td class="text-center">
-							<a href="/Tecnicos/Edit/@tecnico.tecnicoId" class="btn btn-secondary text-white bi bi-pencil-square"></a>
+							<a href="/Tecnicos/Edit/@tecnico.TecnicoId" class="btn btn-secondary text-white bi bi-pencil-square"></a>
 						</td>
 						<td class="text-center">
-							<a href="/Tecnicos/Delete/@tecnico.tecnicoId" class="btn btn-secondary bi bi-trash"></a>
+							<a href="/Tecnicos/Delete/@tecnico.TecnicoId" class="btn btn-secondary bi bi-trash"></a>
 						</td>
 					</tr>
 				}
@@ -103,18 +103,18 @@
 				case "id":
 					if (int.TryParse(valorFiltro, out int id))
 					{
-						tecnicos = await tecnicoService.Listar(w => w.tecnicoId == id);
+						tecnicos = await tecnicoService.Listar(w => w.TecnicoId == id);
 					}
 					break;
 
 				case "Nombre":
-					tecnicos = await tecnicoService.Listar(w => w.nombreTecnico.ToLower().Contains(valorFiltro.ToLower()));
+					tecnicos = await tecnicoService.Listar(w => w.NombresTecnico.ToLower().Contains(valorFiltro.ToLower()));
 					break;
 
 				case "SueldoHora":
 					if (float.TryParse(valorFiltro, out float SueldoHora))
 					{
-						tecnicos = await tecnicoService.Listar(w => w.sueldoHora == SueldoHora);
+						tecnicos = await tecnicoService.Listar(w => w.SueldoHora == SueldoHora);
 					}
 					break;
 			}

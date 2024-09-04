@@ -28,16 +28,16 @@
         </div>
         <div class="card-body">
             <label for="id" class="form-label"><strong>ID</strong></label>
-            <InputNumber id="id" class="form-control" @bind-Value="tecnico.tecnicoId" @onchange="ValidarId"></InputNumber>
-            <ValidationMessage For="@(() => tecnico.tecnicoId)"></ValidationMessage>
+            <InputNumber id="id" class="form-control" @bind-Value="tecnico.TecnicoId" @onchange="ValidarId"></InputNumber>
+            <ValidationMessage For="@(() => tecnico.TecnicoId)"></ValidationMessage>
 
             <label for="nombre" class="form-label"><strong>Nombre Técnico</strong></label>
-            <InputText id="nombre" class="form-control" @bind-Value="tecnico.nombreTecnico" @onchange="ValidarNombre"></InputText>
-            <ValidationMessage For="@(() => tecnico.nombreTecnico)"></ValidationMessage>
+            <InputText id="nombre" class="form-control" @bind-Value="tecnico.NombresTecnico" @onchange="ValidarNombre"></InputText>
+            <ValidationMessage For="@(() => tecnico.NombresTecnico)"></ValidationMessage>
 
             <label for="sueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
             <InputText id="sueldoHora" class="form-control" @bind-Value="formattedSueldoHora" @oninput="OnSueldoHoraChanged"></InputText>
-            <ValidationMessage For="@(() => tecnico.sueldoHora)"></ValidationMessage>
+            <ValidationMessage For="@(() => tecnico.SueldoHora)"></ValidationMessage>
 
             @if (!string.IsNullOrEmpty(mensajeError))
             {
@@ -59,13 +59,13 @@
 
     private string formattedSueldoHora
     {
-        get => tecnico.sueldoHora.ToString("N2"); // Formatea el sueldo por hora como 23,568.00
+        get => tecnico.SueldoHora.ToString("N2"); // Formatea el sueldo por hora como 23,568.00
         set
         {
             var cleanValue = value.Replace(",", ""); // Remueve las comas para parsear
             if (float.TryParse(cleanValue, out var result))
             {
-                tecnico.sueldoHora = result;
+                tecnico.SueldoHora = result;
             }
         }
     }
@@ -74,9 +74,9 @@
     {
         mensajeError = string.Empty; // Limpia el mensaje de error antes de intentar crear
 
-        if (!await tecnicoService.Existe(tecnico.tecnicoId))
+        if (!await tecnicoService.Existe(tecnico.TecnicoId))
         {
-            if (!await tecnicoService.ExistePorNombre(tecnico.nombreTecnico))
+            if (!await tecnicoService.ExistePorNombre(tecnico.NombresTecnico))
             {
                 await tecnicoService.Insertar(tecnico);
                 tecnico = new Tecnicos();

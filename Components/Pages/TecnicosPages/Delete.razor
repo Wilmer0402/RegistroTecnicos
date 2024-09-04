@@ -24,11 +24,11 @@
 		<div class="card-body">
 			<h5><strong>¿Seguro que deseas eliminar el Técnico Selecionado?</strong></h5>
 			<div class="mb-1"></div>
-			<p class="mb-0"><strong>Tecnico Id:</strong> @tecnicos.tecnicoId</p>
+			<p class="mb-0"><strong>Tecnico Id:</strong> @tecnicos.TecnicoId</p>
 			<div class="mb-1">
-				<p class="mb-0"><strong>Nombre Tecnico:</strong> @tecnicos.nombreTecnico</p>
+				<p class="mb-0"><strong>Nombre Tecnico:</strong> @tecnicos.NombresTecnico</p>
 				<div class="mb-1">
-					<p class="mb-0"><strong>Sueldo por Hora:</strong> @tecnicos.sueldoHora</p>
+					<p class="mb-0"><strong>Sueldo por Hora:</strong> @tecnicos.SueldoHora</p>
 					<div class="mb-1">
 					</div>
 				</div>
@@ -61,7 +61,7 @@
 
 	public async Task EliminarTecnico()
 	{
-		var eliminar = await tecnicoService.Eliminar(tecnicos.tecnicoId);
+		var eliminar = await tecnicoService.Eliminar(tecnicos.TecnicoId);
 
 		if (eliminar)
 		{

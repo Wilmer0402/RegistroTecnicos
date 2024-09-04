@@ -16,7 +16,7 @@ namespace RegistroTecnicos.Service
 
         public async Task<bool> Existe(int id)
         {
-            return await _context.Tecnicos.AnyAsync(w => w.tecnicoId == id);
+            return await _context.Tecnicos.AnyAsync(w => w.TecnicoId == id);
         }
 
         public async Task<bool> Modificar(Tecnicos tecnico)
@@ -33,14 +33,14 @@ namespace RegistroTecnicos.Service
 
         public async Task<bool> Guardar(Tecnicos tecnico)
         {
-            if (!await Existe(tecnico.tecnicoId))
+            if (!await Existe(tecnico.TecnicoId))
                 return await Insertar(tecnico);
             return await Modificar(tecnico);
         }
 
         public async Task<bool> Eliminar(int id)
         {
-            var tecnico = await _context.Tecnicos.FirstOrDefaultAsync(w => w.tecnicoId == id);
+            var tecnico = await _context.Tecnicos.FirstOrDefaultAsync(w => w.TecnicoId == id);
             if (tecnico != null)
             {
                 _context.Tecnicos.Remove(tecnico);
@@ -61,24 +61,24 @@ namespace RegistroTecnicos.Service
         public async Task<Tecnicos?> BuscarNombres(string nombre)
         {
             return await _context.Tecnicos.AsNoTracking()
-                .FirstOrDefaultAsync(w => w.nombreTecnico == nombre);
+                .FirstOrDefaultAsync(w => w.NombresTecnico == nombre);
         }
 
         public async Task<Tecnicos> Buscar(int id)
         {
             return await _context.Tecnicos.AsNoTracking()
-                .FirstOrDefaultAsync(w => w.tecnicoId == id);
+                .FirstOrDefaultAsync(w => w.TecnicoId == id);
         }
 
         public async Task<bool> ValidarTecnico(string nombre)
         {
-            return await _context.Tecnicos.AnyAsync(t => t.nombreTecnico == nombre);
+            return await _context.Tecnicos.AnyAsync(t => t.NombresTecnico == nombre);
         }
 
         // Agregado el nuevo método
         public async Task<bool> ExistePorNombre(string nombre)
         {
-            return await _context.Tecnicos.AnyAsync(t => t.nombreTecnico == nombre);
+            return await _context.Tecnicos.AnyAsync(t => t.NombresTecnico == nombre);
         }
     }
 }
