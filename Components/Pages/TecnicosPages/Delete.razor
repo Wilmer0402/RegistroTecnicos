@@ -4,16 +4,6 @@
 @inject NavigationManager navigation
 
 <PageTitle>Eliminar T&eacute;cnico</PageTitle>
-<style>
-	/* Aplica Times New Roman a todos los textos de la página */
-	body {
-		font-family: 'Times New Roman', Times, serif;
-	}
-
-	.card-header h4 {
-		font-family: 'Times New Roman', Times, serif; /* Cambia la fuente del encabezado */
-	}
-</style>
 <EditForm Model="tecnicos" OnValidSubmit="EliminarTecnico">
 	<DataAnnotationsValidator />
 	<div class="card-shadow-lg">
