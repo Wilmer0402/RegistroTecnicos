@@ -21,11 +21,17 @@
                 <InputText id="NombreTecnico" class="form-control" @bind-Value="tecnicos.NombresTecnico"></InputText>
                 <ValidationMessage For="@(()=> tecnicos.NombresTecnico)"></ValidationMessage>
 
-                <label for="SueldoHora" class="form-label"><strong>SueldoHora</strong></label>
+                <label for="SueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
                 <InputNumber id="SueldoHora" class="form-control" @bind-Value="tecnicos.SueldoHora"></InputNumber>
                 <ValidationMessage For="@(()=> tecnicos.SueldoHora)"></ValidationMessage>
             </div>
             <div class="card-footer">
+                @if (!string.IsNullOrEmpty(Mensaje))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @Mensaje
+                    </div>
+                }
                 <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
                 <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
             </div>
@@ -37,7 +43,7 @@
     [Parameter]
     public int TecnicosId { get; set; }
     public Tecnicos tecnicos { get; set; } = new Tecnicos();
-    public bool Repetido { get; set; }
+    public string? Mensaje { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,9 +55,13 @@
 
     public async Task<bool> Validar()
     {
-        var existe = await tecnicoService.ValidarTecnico(tecnicos.NombresTecnico);
-        Repetido = existe == null;
-        return Repetido;
+        var existePorNombre = await tecnicoService.ExistePorNombre(tecnicos.NombresTecnico);
+        var existePorId = await tecnicoService.Existe(tecnicos.TecnicoId);
+
+
+
+        // Retornar verdadero si el nombre o el ID ya existen
+        return existePorNombre || existePorId;
     }
 
     public async Task Modificar()
@@ -61,6 +71,10 @@
             await tecnicoService.Guardar(tecnicos);
             tecnicos = new Tecnicos();
             Volver();
+        }
+        else
+        {
+            Mensaje = "El Técnico ya existe. Por favor, elige otro nombre o ID.";
         }
     }
 
