@@ -48,13 +48,6 @@ namespace RegistroTecnicos.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("NombresTecnico")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<float>("SueldoHora")
-                        .HasColumnType("REAL");
-
                     b.HasKey("Id");
 
                     b.ToTable("TiposTecnicos");
