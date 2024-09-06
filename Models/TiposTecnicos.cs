@@ -7,7 +7,7 @@ namespace RegistroTecnicos.Models
         [Key]
         // Tecnico (ID, Nombre, SueldoHora)
 
-        public int TecnicoId { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Favor, Ingresar el Nombre del Técnico")]
         public string NombresTecnico { get; set; }
