@@ -5,17 +5,12 @@ namespace RegistroTecnicos.Models
     public class TiposTecnicos
     {
         [Key]
-        // Tecnico (ID, Nombre, SueldoHora)
+        // Id, Descripcion
 
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Favor, Ingresar el Nombre del Técnico")]
-        public string NombresTecnico { get; set; }
-
-        [Required(ErrorMessage = "Favor, Ingresar la descripcion del Técnico")]
+        [Required(ErrorMessage = "Favor, Ingrese la Descripcion del Tecnico")]
         public string Descripcion { get; set; }
 
-        [Required(ErrorMessage = "Favor, Ingrese el valor del sueldo por hora")]
-        public float SueldoHora { get; set; }
     }
 }
