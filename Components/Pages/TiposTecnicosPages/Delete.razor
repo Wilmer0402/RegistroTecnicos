@@ -1,0 +1,67 @@
+﻿@page "/TiposTecnicos/Delete/{TecnicosId:int}"
+@rendermode InteractiveServer
+@inject TiposTecnicosService tiposTecnicosService
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar Tipos T&eacute;cnico</PageTitle>
+<EditForm Model="TiposTecnico" OnValidSubmit="EliminarTipoTecnico">
+	<DataAnnotationsValidator />
+	<div class="card-shadow-lg">
+		<div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
+			<i class="bi bi-trash" style="font-size: 2rem;"></i>
+			<h4 style="margin: 0 15px;"><strong>Eliminar Tipos T&eacute;cnico:</strong></h4>
+		</div>
+		<div class="card-body">
+			<h5><strong>¿Seguro que deseas eliminar el Tipos T&eacute;cnico Selecionado?</strong></h5>
+			<div class="mb-1"></div>
+			<p class="mb-0"><strong>Id:</strong> @TiposTecnico.Id</p>
+			<div class="mb-1">
+				<p class="mb-0"><strong>Descripci&oacute;n:</strong> @TiposTecnico.Descripcion</p>
+				<div class="mb-1">
+				</div>
+
+				<div class="card-footer">
+					<button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick=Volver> Volver</button>
+					<button type="button" class="btn btn-success bi bi-trash" @onclick=EliminarTipoTecnico> Eliminar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</EditForm>
+
+
+
+@code {
+
+	[Parameter]
+	public int TecnicosId { get; set; }
+	public TiposTecnicos TiposTecnico { get; set; } = new TiposTecnicos();
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (TecnicosId > 0)
+		{
+			TiposTecnico = (await tiposTecnicosService.Buscar(TecnicosId));
+		}
+
+	}
+
+	public async Task EliminarTipoTecnico()
+	{
+		var eliminar = await tiposTecnicosService.Eliminar(TiposTecnico.Id);
+
+		if (eliminar)
+		{
+			Volver();
+		}
+
+	}
+
+	public void Volver()
+	{
+		navigation.NavigateTo("/TiposTecnicos/Index");
+	}
+
+
+
+}
