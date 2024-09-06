@@ -24,7 +24,6 @@
 			<InputSelect id="filtro" class="form-select" @bind-Value="filtro">
 				<option value="id">ID</option>
 				<option value="Nombre">NombreTecnico</option>
-				<option value="SueldoHora">SueldoHora</option>
 			</InputSelect>
 		</div>
 		<div class="col-md-6">
@@ -42,6 +41,7 @@
 				<tr>
 					<th>ID</th>
 					<th>Nombre Técnico</th>
+					<th>Descripci&oacute;n</th>
 					<th>Sueldo por Hora</th>
 					<th>Ver</th>
 					<th>Editar</th>
@@ -54,6 +54,7 @@
 					<tr>
 						<td class="text-center">@tecnico.TecnicoId</td>
 						<td class="text-center">@tecnico.NombresTecnico</td>
+						<td class="text-center">@tecnico.Descripcion</td>
 						<td class="text-center">@tecnico.SueldoHora.ToString("N2")</td>
 
 						<td class="text-center">
@@ -69,7 +70,7 @@
 				}
 			</tbody>
 		</table>
-		<a href="/Tecnicos/Create" class="btn btn-success bi bi-plus-square-fill mt-3"> Crear</a>	
+		<a href="/Tecnicos/Create" class="btn btn-success bi bi-plus-square-fill mt-3"> Crear</a>
 	</div>
 </div>
 
@@ -114,3 +115,4 @@
 		}
 	}
 }
+
