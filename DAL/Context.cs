@@ -11,5 +11,6 @@ namespace RegistroTecnicos.DAL
         }
 
         public DbSet<Tecnicos> Tecnicos { get; set; }
+        public DbSet<TiposTecnicos> TiposTecnicos { get; set; }
     }
 }
