@@ -1,6 +1,7 @@
 ﻿@page "/Tecnicos/Edit/{TecnicosId:int}"
 @rendermode InteractiveServer
 @inject TecnicoService tecnicoService
+@inject TiposTecnicosService tiposTecnicosService
 @inject NavigationManager navigation
 
 <PageTitle>Editar T&eacute;cnico</PageTitle>
@@ -21,6 +22,15 @@
                 <InputText id="NombreTecnico" class="form-control" @bind-Value="tecnicos.NombresTecnico"></InputText>
                 <ValidationMessage For="@(()=> tecnicos.NombresTecnico)"></ValidationMessage>
 
+                <label for="Descripcion" class="form-label"><strong>Descripci&oacute;n</strong></label>
+                <InputSelect id="Descripcion" class="form-control" @bind-Value="tecnicos.Descripcion">
+                    @foreach (var tipo in tiposTecnicosDisponibles)
+                    {
+                        <option value="@tipo.Descripcion">@tipo.Descripcion</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => tecnicos.Descripcion)"></ValidationMessage>
+
                 <label for="SueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
                 <InputNumber id="SueldoHora" class="form-control" @bind-Value="tecnicos.SueldoHora"></InputNumber>
                 <ValidationMessage For="@(()=> tecnicos.SueldoHora)"></ValidationMessage>
@@ -39,47 +49,54 @@
     </div>
 </EditForm>
 
-@code {
-    [Parameter]
-    public int TecnicosId { get; set; }
-    public Tecnicos tecnicos { get; set; } = new Tecnicos();
-    public string? Mensaje { get; set; }
+ @code {
+        [Parameter]
+        public int TecnicosId { get; set; }
+        public Tecnicos tecnicos { get; set; } = new Tecnicos();
+        public List<TiposTecnicos> tiposTecnicosDisponibles { get; set; } = new List<TiposTecnicos>();
+        public string? Mensaje { get; set; }
+        private string originalNombre { get; set; } = string.Empty;
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (TecnicosId > 0)
+        protected override async Task OnInitializedAsync()
         {
-            tecnicos = await tecnicoService.Buscar(TecnicosId);
+            
+            if (TecnicosId > 0)
+            {
+                tecnicos = await tecnicoService.Buscar(TecnicosId);
+                originalNombre = tecnicos.NombresTecnico;
+            }
+
+            
+            tiposTecnicosDisponibles = await tiposTecnicosService.Listar(t => true);
         }
-    }
 
-    public async Task<bool> Validar()
-    {
-        var existePorNombre = await tecnicoService.ExistePorNombre(tecnicos.NombresTecnico);
-        var existePorId = await tecnicoService.Existe(tecnicos.TecnicoId);
-
-
-
-        // Retornar verdadero si el nombre o el ID ya existen
-        return existePorNombre || existePorId;
-    }
-
-    public async Task Modificar()
-    {
-        if (!await Validar())
+        public async Task Modificar()
         {
+           
+            if (tecnicos.NombresTecnico != originalNombre)
+            {
+            
+                if (await ValidarNombre())
+                {
+                    Mensaje = "El nombre del Técnico ya existe. Por favor, elige otro nombre.";
+                    return;
+                }
+            }
+
+            
             await tecnicoService.Guardar(tecnicos);
             tecnicos = new Tecnicos();
             Volver();
         }
-        else
+
+        public async Task<bool> ValidarNombre()
         {
-            Mensaje = "El Técnico ya existe. Por favor, elige otro nombre o ID.";
+           
+            return await tecnicoService.ExistePorNombre(tecnicos.NombresTecnico);
+        }
+
+        public void Volver()
+        {
+            navigation.NavigateTo("/Tecnicos/Index");
         }
     }
-
-    public void Volver()
-    {
-        navigation.NavigateTo("/Tecnicos/Index");
-    }
-}

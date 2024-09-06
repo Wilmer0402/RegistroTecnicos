@@ -24,6 +24,13 @@
             <InputText id="nombre" class="form-control" @bind-Value="tecnico.NombresTecnico" @onchange="ValidarNombre"></InputText>
             <ValidationMessage For="@(() => tecnico.NombresTecnico)"></ValidationMessage>
 
+            @if (!string.IsNullOrEmpty(mensajeErrorNombre))
+            {
+                <div class="text-danger">
+                    @mensajeErrorNombre
+                </div>
+            }
+
             <label for="sueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
             <InputText id="sueldoHora" class="form-control" @bind-Value="formattedSueldoHora" @oninput="OnSueldoHoraChanged"></InputText>
             <ValidationMessage For="@(() => tecnico.SueldoHora)"></ValidationMessage>
@@ -57,6 +64,7 @@
 @code {
     public Tecnicos tecnico { get; set; } = new Tecnicos();
     private string mensajeError { get; set; } = string.Empty;
+    private string mensajeErrorNombre { get; set; } = string.Empty; 
     public List<TiposTecnicos> TiposTecnicos { get; set; } = new List<TiposTecnicos>();
 
     protected override async Task OnInitializedAsync()
@@ -66,10 +74,10 @@
 
     private string formattedSueldoHora
     {
-        get => tecnico.SueldoHora.ToString("N2"); // Formatea el sueldo por hora como 23,568.00
+        get => tecnico.SueldoHora.ToString("N2");
         set
         {
-            var cleanValue = value.Replace(",", ""); // Remueve las comas para parsear
+            var cleanValue = value.Replace(",", ""); 
             if (float.TryParse(cleanValue, out var result))
             {
                 tecnico.SueldoHora = result;
@@ -79,7 +87,7 @@
 
     public async Task Crear()
     {
-        mensajeError = string.Empty; // Limpia el mensaje de error antes de intentar crear
+        mensajeError = string.Empty; 
 
         if (!await tecnicoService.Existe(tecnico.TecnicoId))
         {
@@ -91,7 +99,7 @@
             }
             else
             {
-                mensajeError = "El nombre del técnico ya existe. Por favor, elija otro nombre.";
+                mensajeErrorNombre = "El nombre del técnico ya existe. Por favor, elija otro nombre.";
             }
         }
         else
@@ -112,9 +120,10 @@
     public async Task ValidarNombre(ChangeEventArgs e)
     {
         var nombre = e.Value.ToString();
+        mensajeErrorNombre = string.Empty; 
         if (await tecnicoService.ExistePorNombre(nombre))
         {
-            await js.InvokeVoidAsync("alert", "El nombre del técnico ya existe. Por favor, elija otro nombre.");
+            mensajeErrorNombre = "El nombre del técnico ya existe. Por favor, elija otro nombre.";
         }
     }
 
@@ -129,4 +138,3 @@
     }
 
 }
-
