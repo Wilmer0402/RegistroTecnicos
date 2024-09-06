@@ -2,6 +2,7 @@
 
 @rendermode InteractiveServer
 @inject TecnicoService tecnicoService
+@inject TiposTecnicosService tiposTecnicosService
 @inject NavigationManager navigation
 @inject IJSRuntime js
 
@@ -34,6 +35,18 @@
                 </div>
             }
         </div>
+
+        <div class="col-5 ms-3">
+            <label class="form-label"><strong>Descripci&oacute;n</strong></label>
+            <InputSelect class="form-select" @bind-Value="tecnico.Descripcion">
+                <option ="" selected disabled>Elije una Opci&oacute;n</option>
+                @foreach (var Tipo in TiposTecnicos)
+                {
+                    <option value="@Tipo.Descripcion">@Tipo.Descripcion</option>
+                }
+            </InputSelect>
+
+        </div>
         <div class="card-footer">
             <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
             <button type="submit" class="btn btn-success bi bi-floppy-fill">Guardar</button>
@@ -44,6 +57,12 @@
 @code {
     public Tecnicos tecnico { get; set; } = new Tecnicos();
     private string mensajeError { get; set; } = string.Empty;
+    public List<TiposTecnicos> TiposTecnicos { get; set; } = new List<TiposTecnicos>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        TiposTecnicos = await tiposTecnicosService.Listar(p => p.Id > 0);
+    }
 
     private string formattedSueldoHora
     {
@@ -108,5 +127,6 @@
     {
         formattedSueldoHora = e.Value.ToString();
     }
+
 }
 
