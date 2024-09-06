@@ -12,6 +12,9 @@ namespace RegistroTecnicos.Models
         [Required(ErrorMessage = "Favor, Ingresar el Nombre del Tecnico")]
         public string NombresTecnico { get; set; }
 
+        [Required(ErrorMessage = "Favor, Ingresar la descripcion del Técnico")]
+        public string Descripcion { get; set; }
+
         [Required(ErrorMessage = "Favor, Ingrese el valor del sueldo por hora")]
         public float SueldoHora { get; set; }
     }
