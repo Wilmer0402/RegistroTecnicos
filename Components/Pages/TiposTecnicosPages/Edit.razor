@@ -53,11 +53,11 @@
 
     public async Task<bool> Validar()
     {
-        
-        var existePorDescripcion = await tiposTecnicosService.ExisteDescripcion(tiposTecnico.Descripcion);
-        var existePorId = await tiposTecnicosService.Existe(tiposTecnico.Id);
 
-        return existePorDescripcion || existePorId;
+        var existePorDescripcion = await tiposTecnicosService.ExisteDescripcion(tiposTecnico.Descripcion);
+
+
+        return existePorDescripcion;
     }
 
 
