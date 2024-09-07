@@ -24,6 +24,7 @@
 			<InputSelect id="filtro" class="form-select" @bind-Value="filtro">
 				<option value="id">ID</option>
 				<option value="Nombre">NombreTecnico</option>
+				<option value="Descripcion">Descripci&oacute;n</option>
 			</InputSelect>
 		</div>
 		<div class="col-md-6">
@@ -101,11 +102,8 @@
 					tecnicos = await tecnicoService.Listar(w => w.NombresTecnico.ToLower().Contains(valorFiltro.ToLower()));
 					break;
 
-				case "SueldoHora":
-					if (float.TryParse(valorFiltro, out float SueldoHora))
-					{
-						tecnicos = await tecnicoService.Listar(w => w.SueldoHora == SueldoHora);
-					}
+				case "Descripcion": 
+					tecnicos = await tecnicoService.Listar(w => w.Descripcion.ToLower().Contains(valorFiltro.ToLower()));
 					break;
 			}
 		}
@@ -115,4 +113,3 @@
 		}
 	}
 }
-
