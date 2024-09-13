@@ -5,21 +5,21 @@
 @inject NavigationManager navigation
 @inject IJSRuntime js
 
-<PageTitle>Crear Nuevo T&eacute;nico</PageTitle>
+<PageTitle>Crear Nuevo T&eacute;cnico</PageTitle>
 <EditForm Model="tecnico" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
     <div class="container"></div>
     <div class="card shadow-lg">
         <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
             <i class="bi bi-person-fill-add" style="font-size: 2rem;"></i>
-            <h4 style="margin: 0 15px;"><strong>Crear Nuevo Técnico:</strong></h4>
+            <h4 style="margin: 0 15px;"><strong>Crear Nuevo T&eacute;cnico:</strong></h4>
         </div>
         <div class="card-body">
             <label for="id" class="form-label"><strong>ID</strong></label>
             <InputNumber id="id" class="form-control" @bind-Value="tecnico.TecnicoId" @onchange="ValidarId"></InputNumber>
             <ValidationMessage For="@(() => tecnico.TecnicoId)"></ValidationMessage>
 
-            <label for="nombre" class="form-label"><strong>Nombre Técnico</strong></label>
+            <label for="nombre" class="form-label"><strong>Nombre T&eacute;cnico</strong></label>
             <InputText id="nombre" class="form-control" @bind-Value="tecnico.NombresTecnico" @onchange="ValidarNombre"></InputText>
             <ValidationMessage For="@(() => tecnico.NombresTecnico)"></ValidationMessage>
 
@@ -31,7 +31,7 @@
             }
 
             <label for="sueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
-            <InputText id="sueldoHora" class="form-control" @bind-Value="formattedSueldoHora" @oninput="OnSueldoHoraChanged"></InputText>
+            <InputNumber id="sueldoHora" class="form-control" @bind-Value="tecnico.SueldoHora" Step="0.01" />
             <ValidationMessage For="@(() => tecnico.SueldoHora)"></ValidationMessage>
 
             @if (!string.IsNullOrEmpty(mensajeError))
@@ -45,14 +45,14 @@
         <div class="col-5 ms-3">
             <label class="form-label"><strong>Descripci&oacute;n</strong></label>
             <InputSelect class="form-select" @bind-Value="tecnico.Id">
-                <option ="" selected disabled>Elije una Opci&oacute;n</option>
+                <option value="" selected disabled>Elije una Opción</option>
                 @foreach (var Tipo in TiposTecnicos)
                 {
                     <option value="@Tipo.Id">@Tipo.Descripcion</option>
                 }
             </InputSelect>
-
         </div>
+
         <div class="card-footer">
             <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
             <button type="submit" class="btn btn-success bi bi-floppy-fill">Guardar</button>
@@ -63,7 +63,7 @@
 @code {
     public Tecnicos tecnico { get; set; } = new Tecnicos();
     private string mensajeError { get; set; } = string.Empty;
-    private string mensajeErrorNombre { get; set; } = string.Empty; 
+    private string mensajeErrorNombre { get; set; } = string.Empty;
     public List<TiposTecnicos> TiposTecnicos { get; set; } = new List<TiposTecnicos>();
 
     protected override async Task OnInitializedAsync()
@@ -71,22 +71,9 @@
         TiposTecnicos = await tiposTecnicosService.Listar(p => p.Id > 0);
     }
 
-    private string formattedSueldoHora
-    {
-        get => tecnico.SueldoHora.ToString("N2");
-        set
-        {
-            var cleanValue = value.Replace(",", ""); 
-            if (float.TryParse(cleanValue, out var result))
-            {
-                tecnico.SueldoHora = result;
-            }
-        }
-    }
-
     public async Task Crear()
     {
-        mensajeError = string.Empty; 
+        mensajeError = string.Empty;
 
         if (!await tecnicoService.Existe(tecnico.TecnicoId))
         {
@@ -109,17 +96,19 @@
 
     public async Task ValidarId(ChangeEventArgs e)
     {
-        var id = int.Parse(e.Value.ToString());
-        if (await tecnicoService.Existe(id))
+        if (int.TryParse(e.Value.ToString(), out var id))
         {
-            await js.InvokeVoidAsync("alert", "Error el ID ya Existe. Por favor, elija otro ID.");
+            if (await tecnicoService.Existe(id))
+            {
+                await js.InvokeVoidAsync("alert", "Error el ID ya Existe. Por favor, elija otro ID.");
+            }
         }
     }
 
     public async Task ValidarNombre(ChangeEventArgs e)
     {
         var nombre = e.Value.ToString();
-        mensajeErrorNombre = string.Empty; 
+        mensajeErrorNombre = string.Empty;
         if (await tecnicoService.ExistePorNombre(nombre))
         {
             mensajeErrorNombre = "El nombre del técnico ya existe. Por favor, elija otro nombre.";
@@ -130,10 +119,4 @@
     {
         navigation.NavigateTo("/Tecnicos/Index");
     }
-
-    private void OnSueldoHoraChanged(ChangeEventArgs e)
-    {
-        formattedSueldoHora = e.Value.ToString();
-    }
-
 }
