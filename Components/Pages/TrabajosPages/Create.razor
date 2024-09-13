@@ -1,0 +1,98 @@
+﻿@page "/Trabajos/Create"
+@rendermode InteractiveServer
+@inject TecnicoService tecnicoService
+@inject TrabajosService trabajosService
+@inject ClientesService clientesService
+@inject NavigationManager navigation
+
+<PageTitle>Crear Nuevo Trabajo</PageTitle>
+<EditForm Model="@Trabajos" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="container"></div>
+    <div class="card shadow-lg">
+        <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-person-fill-add" style="font-size: 2rem;"></i>
+            <h4 style="margin: 0 15px;"><strong>Crear Trabajo:</strong></h4>
+        </div>
+        <div class="card-body">
+            <label for="id" class="form-label"><strong>ID</strong></label>
+            <InputNumber id="id" class="form-control" @bind-Value="Trabajos.TrabajoId" readonly />
+            <ValidationMessage For="@(() => Trabajos.TrabajoId)" />
+
+            <label for="fecha" class="form-label"><strong>Fecha</strong></label>
+            <InputDate id="fecha" class="form-control" @bind-Value="Trabajos.Fecha" />
+            <ValidationMessage For="@(() => Trabajos.Fecha)" />
+
+            <label for="cliente" class="form-label"><strong>Elija el Cliente</strong></label>
+            <InputSelect id="cliente" class="form-select" @bind-Value="Trabajos.ClienteId">
+                <option value="" selected disabled>Elija un Cliente</option>
+                @foreach (var cliente in Clientes)
+                {
+                    <option value="@cliente.ClienteId">@cliente.Nombres</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => Trabajos.ClienteId)" />
+
+            <label for="tecnico" class="form-label"><strong>Elija el Técnico</strong></label>
+            <InputSelect id="tecnico" class="form-select" @bind-Value="Trabajos.TecnicoId">
+                <option value="" selected disabled>Elija un Técnico</option>
+                @foreach (var tecnico in Tecnicos)
+                {
+                    <option value="@tecnico.TecnicoId">@tecnico.NombresTecnico</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => Trabajos.TecnicoId)" />
+
+            <label for="descripcion" class="form-label"><strong>Descripción del Trabajo</strong></label>
+            <InputText id="descripcion" class="form-control" @bind-Value="Trabajos.Descripcion" />
+            <ValidationMessage For="@(() => Trabajos.Descripcion)" />
+
+            <label for="monto" class="form-label"><strong>Monto del Trabajo</strong></label>
+            <InputNumber id="monto" class="form-control" @bind-Value="Trabajos.Monto" />
+            <ValidationMessage For="@(() => Trabajos.Monto)" />
+
+            @if (!string.IsNullOrEmpty(SueldoMensaje))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @SueldoMensaje
+                </div>
+            }
+        </div>
+
+        <div class="card-footer">
+            <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+            <button type="submit" class="btn btn-success bi bi-floppy-fill">Guardar</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    public List<Tecnicos> Tecnicos = new List<Tecnicos>();
+    public List<Clientes> Clientes = new List<Clientes>();
+    public Trabajos Trabajos { get; set; } = new Trabajos();
+    string SueldoMensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tecnicos = await tecnicoService.Listar(w => w.Id > 0);
+        Clientes = await clientesService.Listar(j => j.ClienteId > 0);
+    }
+
+    public async Task Guardar()
+    {
+        if (Trabajos.Monto <= 0)
+        {
+            SueldoMensaje = "El monto del trabajo debe ser mayor a 0.";
+            return;
+        }
+
+        await trabajosService.Guardar(Trabajos);
+        Trabajos = new Trabajos();
+        navigation.NavigateTo("/Trabajos/Index");
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Trabajos/Index");
+    }
+}
