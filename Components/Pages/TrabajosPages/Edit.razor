@@ -1,6 +1,8 @@
 ﻿@page "/Trabajos/Edit/{TrabajoId:int}"
 @rendermode InteractiveServer
 @inject TrabajosService trabajosService
+@inject ClientesService clientesService
+@inject TecnicoService tecnicoService
 @inject NavigationManager navigation
 
 <PageTitle>Editar Trabajo</PageTitle>
@@ -26,14 +28,24 @@
 
                 <!-- Cliente -->
                 <label for="cliente" class="form-label"><strong>Cliente</strong></label>
-                <InputText id="cliente" class="form-control" @bind-Value="trabajo.Clientes.Nombres" readonly></InputText>
+                <InputSelect id="cliente" class="form-control" @bind-Value="trabajo.ClienteId">
+                    @foreach (var cliente in clientes)
+                    {
+                        <option value="@cliente.ClienteId">@cliente.Nombres</option>
+                    }
+                </InputSelect>
 
                 <!-- Técnico -->
-                <label for="tecnico" class="form-label"><strong>T&eacute;cnico</strong></label>
-                <InputText id="tecnico" class="form-control" @bind-Value="trabajo.Tecnicos.NombresTecnico" readonly></InputText>
+                <label for="tecnico" class="form-label"><strong>Técnico</strong></label>
+                <InputSelect id="tecnico" class="form-control" @bind-Value="trabajo.TecnicoId">
+                    @foreach (var tecnico in tecnicos)
+                    {
+                        <option value="@tecnico.TecnicoId">@tecnico.NombresTecnico</option>
+                    }
+                </InputSelect>
 
                 <!-- Descripción -->
-                <label for="descripcion" class="form-label"><strong>Descripci&oacute;n</strong></label>
+                <label for="descripcion" class="form-label"><strong>Descripción</strong></label>
                 <InputTextArea id="descripcion" class="form-control" @bind-Value="trabajo.Descripcion"></InputTextArea>
                 <ValidationMessage For="@(() => trabajo.Descripcion)" />
 
@@ -53,6 +65,8 @@
                 }
                 <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
                 <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
+                <!-- Botón de Enviar Mensaje de WhatsApp -->
+                <button type="button" class="btn btn-success bi bi-whatsapp" @onclick="EnviarMensajeWhatsapp"> Mensaje</button>
             </div>
         </div>
     </div>
@@ -62,39 +76,79 @@
     [Parameter]
     public int TrabajoId { get; set; }
     public Trabajos trabajo { get; set; } = new Trabajos();
+    public List<Clientes> clientes { get; set; } = new List<Clientes>();
+    public List<Tecnicos> tecnicos { get; set; } = new List<Tecnicos>();
     public string? Mensaje { get; set; }
+    public Clientes? clienteSeleccionado { get; set; } = new Clientes();
+    public Tecnicos? tecnicoSeleccionado { get; set; } = new Tecnicos();
 
     protected override async Task OnInitializedAsync()
     {
+        tecnicos = await tecnicoService.Listar(w => w.Id > 0);
+        clientes = await clientesService.Listar(w => w.ClienteId > 0);
+
         if (TrabajoId > 0)
         {
             trabajo = await trabajosService.Buscar(TrabajoId);
+
+            if (trabajo.ClienteId > 0)
+            {
+                clienteSeleccionado = await clientesService.Buscar(trabajo.ClienteId);
+            }
+
+            if (trabajo.TecnicoId > 0)
+            {
+                tecnicoSeleccionado = await tecnicoService.Buscar(trabajo.TecnicoId);
+            }
         }
     }
 
     public async Task<bool> Validar()
     {
-        // Validar si la descripción ya existe para otros trabajos, o si hay otras validaciones necesarias
         var existeTrabajo = await trabajosService.ExisteDescripcion(trabajo.Descripcion);
         return existeTrabajo;
     }
 
     public async Task Modificar()
     {
-        if (!await Validar())
+        var resultado = await trabajosService.Guardar(trabajo);
+
+        if (resultado)
         {
-            await trabajosService.Guardar(trabajo);
-            trabajo = new Trabajos();
             Volver();
         }
         else
         {
-            Mensaje = "Ya existe un trabajo con esta descripción. Por favor, elija otra.";
+            Mensaje = "Ocurrió un error al guardar el trabajo. Por favor, intenta nuevamente.";
         }
     }
 
     public void Volver()
     {
         navigation.NavigateTo("/Trabajos/Index");
+    }
+
+    public async Task EnviarMensajeWhatsapp()
+    {
+        if (clienteSeleccionado == null || string.IsNullOrEmpty(clienteSeleccionado.WhatsApp))
+        {
+            Mensaje = "No se puede enviar el mensaje. El cliente seleccionado no tiene un número de WhatsApp válido.";
+            return;
+        }
+
+        if (tecnicoSeleccionado == null)
+        {
+            Mensaje = "No se puede enviar el mensaje. El técnico asignado no está disponible.";
+            return;
+        }
+
+        string mensaje = $"Hola, este es un mensaje automático para informarle que se trabajo ha sido aceptado con los Siguientes Datos:\n\n" +
+                         $"Descripción del Trabajo: {trabajo.Descripcion}\n" +
+                         $"Técnico Asignado: {tecnicoSeleccionado.NombresTecnico}";
+
+        string numeroTelefono = clienteSeleccionado.WhatsApp;
+
+        string urlWhatsapp = $"https://wa.me/{numeroTelefono}?text={Uri.EscapeDataString(mensaje)}";
+        navigation.NavigateTo(urlWhatsapp, forceLoad: true);
     }
 }
