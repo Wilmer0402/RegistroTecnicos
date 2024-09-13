@@ -24,7 +24,6 @@
 			<InputSelect id="filtro" class="form-select" @bind-Value="filtro">
 				<option value="id">ID</option>
 				<option value="Nombre">NombreTecnico</option>
-				<option value="Descripcion">Descripci&oacute;n</option>
 			</InputSelect>
 		</div>
 		<div class="col-md-6">
@@ -41,7 +40,7 @@
 			<thead class="table table-striped text-center bg-success text-white">
 				<tr>
 					<th>ID</th>
-					<th>Nombre Técnico</th>
+					<th>Nombre T&eacute;cnico</th>
 					<th>Descripci&oacute;n</th>
 					<th>Sueldo por Hora</th>
 					<th>Ver</th>
@@ -55,7 +54,7 @@
 					<tr>
 						<td class="text-center">@tecnico.TecnicoId</td>
 						<td class="text-center">@tecnico.NombresTecnico</td>
-						<td class="text-center">@tecnico.Descripcion</td>
+						<td class="text-center">@tecnico.TiposTecnicos.Descripcion</td>
 						<td class="text-center">@tecnico.SueldoHora.ToString("N2")</td>
 
 						<td class="text-center">
@@ -100,10 +99,6 @@
 
 				case "Nombre":
 					tecnicos = await tecnicoService.Listar(w => w.NombresTecnico.ToLower().Contains(valorFiltro.ToLower()));
-					break;
-
-				case "Descripcion": 
-					tecnicos = await tecnicoService.Listar(w => w.Descripcion.ToLower().Contains(valorFiltro.ToLower()));
 					break;
 			}
 		}
