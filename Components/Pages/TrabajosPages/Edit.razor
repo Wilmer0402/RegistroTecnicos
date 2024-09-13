@@ -63,9 +63,8 @@
                         @Mensaje
                     </div>
                 }
-                <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
-                <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
-                <!-- Botón de Enviar Mensaje de WhatsApp -->
+                <button type="button" class="btn btn-success text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <button type="submit" class="btn btn-secondary bi bi-pencil-square"> Modificar</button>
                 <button type="button" class="btn btn-success bi bi-whatsapp" @onclick="EnviarMensajeWhatsapp"> Mensaje</button>
             </div>
         </div>
@@ -142,7 +141,7 @@
             return;
         }
 
-        string mensaje = $"Hola, este es un mensaje automático para informarle que se trabajo ha sido aceptado con los Siguientes Datos:\n\n" +
+        string mensaje = $"Hola, este es un mensaje automático para informarle que su trabajo ha sido aceptado con los Siguientes Datos:\n\n" +
                          $"Descripción del Trabajo: {trabajo.Descripcion}\n" +
                          $"Técnico Asignado: {tecnicoSeleccionado.NombresTecnico}";
 
