@@ -1,0 +1,105 @@
+﻿@page "/Clientes/Index"
+@rendermode InteractiveServer
+@inject ClientesService clientesService
+@inject NavigationManager navigation
+
+<PageTitle>Clientes</PageTitle>
+<div class="container">
+	<div class="card-header bg-success text-white text-center">
+		<div style="display: flex; align-items: center; justify-content: center;">
+			<!-- Icono izquierdo-->
+			<i class="bi bi-people-fill" style="font-size: 2rem;"></i>
+
+			<!-- Título en el centro -->
+			<h3 style="margin: 0 15px;"><strong>Clientes</strong></h3>
+
+			<!-- Icono derecho -->
+			<i class="bi bi-people-fill" style="font-size: 2rem;"></i>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<label for="filtro" class="form-label"><strong>Filtrar por:</strong></label>
+			<InputSelect id="filtro" class="form-select" @bind-Value="filtro">
+				<option value="id">ID</option>
+			</InputSelect>
+		</div>
+		<div class="col-md-6">
+			<label for="valorFiltro" class="form-label"><strong>B&uacute;squeda</strong></label>
+			<div class="input-group">
+				<InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeholder="Buscar" />
+				<button @onclick="Buscar" class="btn btn-secondary bi bi-search" type="button"> Buscar</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<table class="table table-light table-bordered">
+			<thead class="table table-striped text-center bg-success text-white">
+				<tr>
+					<th>ClienteId</th>
+					<th>Nombres </th>
+					<th>WhatsApp</th>
+					<th>Ver</th>
+					<th>Editar</th>
+					<th>Eliminar</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var cliente in Cliente)
+				{
+					<tr>
+						<td class="text-center">@cliente.ClienteId</td>
+						<td class="text-center">@cliente.Nombres</td>
+						<td class="text-center">@cliente.WhatsApp</td>
+						<td class="text-center">
+							<a href="/Clientes/Details/@cliente.ClienteId" class="btn btn-secondary text-white bi bi-eye"></a>
+						</td>
+						<td class="text-center">
+							<a href="/Clientes/Edit/@cliente.ClienteId" class="btn btn-secondary text-white bi bi-pencil-square"></a>
+						</td>
+						<td class="text-center">
+							<a href="/Clientes/Delete/@cliente.ClienteId" class="btn btn-secondary bi bi-trash"></a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+	<a href="Clientes/Create" class="btn btn-success bi bi-plus-square-fill mt-3"> Crear</a>
+</div>
+
+@code {
+	public List<Clientes> Cliente = new List<Clientes>();
+	public string filtro = "id";
+	public string valorFiltro = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		Cliente = await clientesService.Listar(a => true);
+	}
+
+	public async Task Buscar()
+	{
+		if (!string.IsNullOrWhiteSpace(valorFiltro))
+		{
+			switch (filtro)
+			{
+				case "id":
+					if (int.TryParse(valorFiltro, out int id))
+					{
+						Cliente = await clientesService.Listar(w => w.ClienteId == id);
+					}
+					break;
+
+				case "Nombres":
+					Cliente = await clientesService.Listar(w => w.Nombres.ToLower().Contains(valorFiltro.ToLower()));
+					break;
+			}
+		}
+
+	}
+}
+
