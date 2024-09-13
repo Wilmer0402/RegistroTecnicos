@@ -1,0 +1,100 @@
+﻿@page "/Trabajos/Edit/{TrabajoId:int}"
+@rendermode InteractiveServer
+@inject TrabajosService trabajosService
+@inject NavigationManager navigation
+
+<PageTitle>Editar Trabajo</PageTitle>
+<EditForm Model="trabajo" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            <!-- Header -->
+            <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-pencil-square" style="font-size: 2rem;"></i>
+                <h4 style="margin: 0 15px;"><strong>Editar Trabajo:</strong></h4>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+                <!-- Trabajo ID -->
+                <label for="id" class="form-label"><strong>ID</strong></label>
+                <InputNumber id="id" class="form-control" @bind-Value="trabajo.TrabajoId" readonly></InputNumber>
+
+                <!-- Fecha -->
+                <label for="fecha" class="form-label"><strong>Fecha</strong></label>
+                <InputDate id="fecha" class="form-control" @bind-Value="trabajo.Fecha"></InputDate>
+
+                <!-- Cliente -->
+                <label for="cliente" class="form-label"><strong>Cliente</strong></label>
+                <InputText id="cliente" class="form-control" @bind-Value="trabajo.Clientes.Nombres" readonly></InputText>
+
+                <!-- Técnico -->
+                <label for="tecnico" class="form-label"><strong>T&eacute;cnico</strong></label>
+                <InputText id="tecnico" class="form-control" @bind-Value="trabajo.Tecnicos.NombresTecnico" readonly></InputText>
+
+                <!-- Descripción -->
+                <label for="descripcion" class="form-label"><strong>Descripci&oacute;n</strong></label>
+                <InputTextArea id="descripcion" class="form-control" @bind-Value="trabajo.Descripcion"></InputTextArea>
+                <ValidationMessage For="@(() => trabajo.Descripcion)" />
+
+                <!-- Monto -->
+                <label for="monto" class="form-label"><strong>Monto</strong></label>
+                <InputNumber id="monto" class="form-control" @bind-Value="trabajo.Monto"></InputNumber>
+                <ValidationMessage For="@(() => trabajo.Monto)" />
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer">
+                @if (!string.IsNullOrEmpty(Mensaje))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @Mensaje
+                    </div>
+                }
+                <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int TrabajoId { get; set; }
+    public Trabajos trabajo { get; set; } = new Trabajos();
+    public string? Mensaje { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (TrabajoId > 0)
+        {
+            trabajo = await trabajosService.Buscar(TrabajoId);
+        }
+    }
+
+    public async Task<bool> Validar()
+    {
+        // Validar si la descripción ya existe para otros trabajos, o si hay otras validaciones necesarias
+        var existeTrabajo = await trabajosService.ExisteDescripcion(trabajo.Descripcion);
+        return existeTrabajo;
+    }
+
+    public async Task Modificar()
+    {
+        if (!await Validar())
+        {
+            await trabajosService.Guardar(trabajo);
+            trabajo = new Trabajos();
+            Volver();
+        }
+        else
+        {
+            Mensaje = "Ya existe un trabajo con esta descripción. Por favor, elija otra.";
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Trabajos/Index");
+    }
+}
