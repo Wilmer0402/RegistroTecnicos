@@ -1,0 +1,65 @@
+﻿@page "/Trabajos/Delete/{TrabajoId:int}"
+@rendermode InteractiveServer
+@inject TrabajosService trabajosService
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar Trabajo</PageTitle>
+
+<EditForm Model="trabajo" OnValidSubmit="EliminarTrabajo">
+    <DataAnnotationsValidator />
+    <div class="card-shadow-lg">
+        <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-trash" style="font-size: 2rem;"></i>
+            <h4 style="margin: 0 15px;"><strong>Eliminar Trabajo</strong></h4>
+        </div>
+        <div class="card-body">
+            <h5><strong>¿Seguro que deseas eliminar el Trabajo Seleccionado?</strong></h5>
+            <div class="mb-1"></div>
+            <p class="mb-0"><strong>Trabajo Id:</strong> @trabajo.TrabajoId</p>
+            <div class="mb-1">
+                <p class="mb-0"><strong>Fecha:</strong> @trabajo.Fecha.ToShortDateString()</p>
+                <p class="mb-0"><strong>Cliente:</strong> @trabajo.Clientes.Nombres</p>
+                <p class="mb-0"><strong>Cliente Id:</strong>@trabajo.ClienteId</p>
+                <p class="mb-0"><strong>T&eacute;cnico Id:</strong>@trabajo.TecnicoId</p>
+                <p class="mb-0"><strong>T&eacute;cnico:</strong> @trabajo.Tecnicos.NombresTecnico</p>
+                <p class="mb-0"><strong>Descripci&oacute;n:</strong> @trabajo.Descripcion</p>
+                <p class="mb-0"><strong>Monto:</strong> @trabajo.Monto.ToString("N2")</p>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+            <button type="submit" class="btn btn-success bi bi-trash"> Eliminar</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int TrabajoId { get; set; }
+    public Trabajos trabajo { get; set; } = new Trabajos();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (TrabajoId > 0)
+        {
+            trabajo = await trabajosService.Buscar(TrabajoId);
+        }
+    }
+
+    public async Task EliminarTrabajo()
+    {
+        var eliminar = await trabajosService.Eliminar(trabajo.TrabajoId);
+
+        if (eliminar)
+        {
+            Volver();
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Trabajos/Index");
+    }
+}
+
