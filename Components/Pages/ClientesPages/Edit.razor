@@ -1,0 +1,86 @@
+﻿@page "/Clientes/Edit/{ClienteId:int}"
+@rendermode InteractiveServer
+@inject ClientesService clientesService
+@inject NavigationManager navigation
+
+<PageTitle>Editar Cliente</PageTitle>
+<EditForm Model="Cliente" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-pencil-square" style="font-size: 2rem;"></i>
+                <h4 style="margin: 0 15px;"><strong>Editar Cliente:</strong></h4>
+            </div>
+            <div class="card-body">
+                @*Datos*@
+                <label for="id" class="form-label"><strong>ID</strong></label>
+                <InputNumber id="id" class="form-control" @bind-Value="Cliente.ClienteId" readonly></InputNumber>
+
+                <label for="Nombres" class="form-label"><strong>Nombres</strong></label>
+                <InputText id="Nombres" class="form-control" @bind-Value="Cliente.Nombres"></InputText>
+                <ValidationMessage For="@(()=> Cliente.Nombres)"></ValidationMessage>
+
+                <label for="WhatsApp" class="form-label"><strong>WhatsApp</strong></label>
+                <InputText id="WhatsApp" class="form-control" @bind-Value="Cliente.WhatsApp"></InputText>
+                <ValidationMessage For="@(()=> Cliente.WhatsApp)"></ValidationMessage>
+            </div>
+            <div class="card-footer">
+                @if (!string.IsNullOrEmpty(Mensaje))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @Mensaje
+                    </div>
+                }
+                <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int ClienteId { get; set; }
+    public Clientes Cliente { get; set; } = new Clientes();
+    public string? Mensaje { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ClienteId > 0)
+        {
+            Cliente = await clientesService.Buscar(ClienteId);
+        }
+    }
+
+    public async Task<bool> Validar()
+    {
+        
+        var existePorNombre = await clientesService.ExistePorNombre(Cliente.Nombres);
+        if (existePorNombre)
+        {
+            var clienteExistente = await clientesService.BuscarPorNombre(Cliente.Nombres);
+            return clienteExistente != null && clienteExistente.ClienteId != Cliente.ClienteId;
+        }
+        return false;
+    }
+
+    public async Task Modificar()
+    {
+        if (!await Validar())
+        {
+            await clientesService.Guardar(Cliente);
+            Cliente = new Clientes();
+            Volver();
+        }
+        else
+        {
+            Mensaje = "El nombre del cliente ya existe. Por favor, elija otro.";
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Clientes/Index");
+    }
+}
