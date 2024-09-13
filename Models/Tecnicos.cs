@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RegistroTecnicos.Models
 {
@@ -10,9 +11,6 @@ namespace RegistroTecnicos.Models
 
 		[Required(ErrorMessage = "Favor, Ingresar el Nombre del Tecnico")]
 		public string NombresTecnico { get; set; }
-
-		[Required(ErrorMessage = "Favor, Ingresar la descripcion del Técnico")]
-		public string Descripcion { get; set; }
 
 		[Required(ErrorMessage = "Favor, Ingrese el valor del sueldo por hora")]
 		public float SueldoHora { get; set; }
@@ -26,5 +24,11 @@ namespace RegistroTecnicos.Models
 					new[] { nameof(SueldoHora) });
 			}
 		}
-	}
+
+        [ForeignKey("TiposTecnicos")]
+
+        public int Id { get; set; }
+
+        public TiposTecnicos? TiposTecnicos { get; set; }
+    }
 }
