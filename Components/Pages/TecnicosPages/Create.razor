@@ -1,12 +1,11 @@
 ﻿@page "/Tecnicos/Create"
-
 @rendermode InteractiveServer
 @inject TecnicoService tecnicoService
 @inject TiposTecnicosService tiposTecnicosService
 @inject NavigationManager navigation
 @inject IJSRuntime js
 
-<PageTitle>Crear Nuevo T&ecuate;nico</PageTitle>
+<PageTitle>Crear Nuevo T&eacute;nico</PageTitle>
 <EditForm Model="tecnico" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
     <div class="container"></div>
@@ -45,11 +44,11 @@
 
         <div class="col-5 ms-3">
             <label class="form-label"><strong>Descripci&oacute;n</strong></label>
-            <InputSelect class="form-select" @bind-Value="tecnico.Descripcion">
+            <InputSelect class="form-select" @bind-Value="tecnico.Id">
                 <option ="" selected disabled>Elije una Opci&oacute;n</option>
                 @foreach (var Tipo in TiposTecnicos)
                 {
-                    <option value="@Tipo.Descripcion">@Tipo.Descripcion</option>
+                    <option value="@Tipo.Id">@Tipo.Descripcion</option>
                 }
             </InputSelect>
 
