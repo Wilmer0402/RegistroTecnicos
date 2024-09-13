@@ -15,10 +15,12 @@ namespace RegistroTecnicos
             var ConStr = builder.Configuration.GetConnectionString("ConStr");
             builder.Services.AddDbContext<Context>(c => c.UseSqlite(ConStr));
 
-            //Inyeccion del servicio (service)
+            //Inyeccion de los  servicios (service)
 
             builder.Services.AddScoped<TecnicoService>();
             builder.Services.AddScoped<TiposTecnicosService>();
+            builder.Services.AddScoped<ClientesService>();
+            builder.Services.AddScoped<TrabajosService>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
