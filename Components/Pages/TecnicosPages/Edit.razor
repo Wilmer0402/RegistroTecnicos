@@ -23,13 +23,13 @@
                 <ValidationMessage For="@(()=> tecnicos.NombresTecnico)"></ValidationMessage>
 
                 <label for="Descripcion" class="form-label"><strong>Descripci&oacute;n</strong></label>
-                <InputSelect id="Descripcion" class="form-control" @bind-Value="tecnicos.Descripcion">
+                <InputSelect id="Descripcion" class="form-control" @bind-Value="tecnicos.Id">
                     @foreach (var tipo in tiposTecnicosDisponibles)
                     {
-                        <option value="@tipo.Descripcion">@tipo.Descripcion</option>
+                        <option value="@tipo.Id">@tipo.Descripcion</option>
                     }
                 </InputSelect>
-                <ValidationMessage For="@(() => tecnicos.Descripcion)"></ValidationMessage>
+                <ValidationMessage For="@(() => tecnicos.Id)"></ValidationMessage>
 
                 <label for="SueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
                 <InputNumber id="SueldoHora" class="form-control" @bind-Value="tecnicos.SueldoHora"></InputNumber>
