@@ -1,0 +1,70 @@
+﻿@page "/Clientes/Delete/{ClienteId:int}"
+@rendermode InteractiveServer
+@inject ClientesService clientesService
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar Cliente</PageTitle>
+<EditForm Model="Cliente" OnValidSubmit="EliminarCliente">
+	<DataAnnotationsValidator />
+	<div class="card-shadow-lg">
+		<div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
+			<i class="bi bi-trash" style="font-size: 2rem;"></i>
+			<h4 style="margin: 0 15px;"><strong>Eliminar Técnico:</strong></h4>
+		</div>
+		<div class="card-body">
+			<h5><strong>¿Seguro que deseas eliminar el Cliente Selecionado?</strong></h5>
+			<div class="mb-1"></div>
+			<p class="mb-0"><strong>Cliente Id:</strong> @Cliente.ClienteId</p>
+			<div class="mb-1">
+				<p class="mb-0"><strong>Nombres Cliente:</strong> @Cliente.Nombres</p>
+				<div class="mb-1">
+					<div class="mb-1">
+						<p class="mb-0"><strong>WhatsApp:</strong> @Cliente.WhatsApp</p>
+					</div>
+				</div>
+
+				<div class="card-footer">
+					<button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick=Volver> Volver</button>
+					<button type="button" class="btn btn-success bi bi-trash" @onclick=EliminarCliente> Eliminar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</EditForm>
+
+
+
+@code {
+
+	[Parameter]
+	public int ClienteId { get; set; }
+	public Clientes Cliente { get; set; } = new Clientes();
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (ClienteId > 0)
+		{
+			Cliente= (await clientesService.Buscar(ClienteId));
+		}
+
+	}
+
+	public async Task EliminarCliente()
+	{
+		var eliminar = await clientesService.Eliminar(Cliente.ClienteId);
+
+		if (eliminar)
+		{
+			Volver();
+		}
+
+	}
+
+	public void Volver()
+	{
+		navigation.NavigateTo("/Clientes/Index");
+	}
+
+
+
+}
