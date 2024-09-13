@@ -52,8 +52,9 @@ namespace RegistroTecnicos.Service
 
         public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> criterio)
         {
-            return await _context.Tecnicos.
-                AsNoTracking()
+            return await _context.Tecnicos
+                .Include(w => w.TiposTecnicos)
+                .AsNoTracking()
                 .Where(criterio)
                 .ToListAsync();
         }
@@ -66,7 +67,9 @@ namespace RegistroTecnicos.Service
 
         public async Task<Tecnicos> Buscar(int id)
         {
-            return await _context.Tecnicos.AsNoTracking()
+            return await _context.Tecnicos
+                .Include(w => w.TiposTecnicos)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(w => w.TecnicoId == id);
         }
 
