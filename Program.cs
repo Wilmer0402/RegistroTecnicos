@@ -21,6 +21,7 @@ namespace RegistroTecnicos
             builder.Services.AddScoped<TiposTecnicosService>();
             builder.Services.AddScoped<ClientesService>();
             builder.Services.AddScoped<TrabajosService>();
+            builder.Services.AddScoped<PrioridadesService>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
