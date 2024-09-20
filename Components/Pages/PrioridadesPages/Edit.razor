@@ -1,0 +1,85 @@
+﻿@page "/Prioridades/Edit/{PrioridadId:int}"
+@rendermode InteractiveServer
+@inject PrioridadesService prioridadesService
+@inject NavigationManager navigation
+
+<PageTitle>Editar Prioridades</PageTitle>
+<EditForm Model="Prioridad" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-pencil-square" style="font-size: 2rem;"></i>
+                <h4 style="margin: 0 15px;"><strong>Editar Prioridades:</strong></h4>
+            </div>
+            <div class="card-body">
+                @*Datos*@
+                <label for="Id" class="form-label"><strong>ID</strong></label>
+                <InputNumber id="id" class="form-control" @bind-Value="Prioridad.PrioridadId" readonly></InputNumber>
+
+                <label for="Descripcion" class="form-label"><strong>Descripci&oacute;n</strong></label>
+                <InputText id="Descripcion" class="form-control" @bind-Value="Prioridad.Descripcion"></InputText>
+                <ValidationMessage For="@(()=> Prioridad.Descripcion)"></ValidationMessage>
+
+                <label for="Tiempo" class="form-label"><strong>Tiempo (Minutos)</strong></label>
+                <InputNumber id="Tiempo" class="form-control" @bind-Value="Prioridad.Tiempo"></InputNumber>
+            </div>
+            <div class="card-footer">
+                @if (!string.IsNullOrEmpty(Mensaje))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @Mensaje
+                    </div>
+                }
+                <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int PrioridadId { get; set; }
+    public Prioridades Prioridad { get; set; } = new Prioridades();
+    public string? Mensaje { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (PrioridadId > 0)
+        {
+            Prioridad = await prioridadesService.Buscar(PrioridadId);
+        }
+    }
+
+    public async Task<bool> Validar()
+    {
+        var prioridadExistente = await prioridadesService.Buscar(PrioridadId);
+        if (prioridadExistente != null && prioridadExistente.Descripcion == Prioridad.Descripcion)
+        {
+            return false;
+        }
+
+        var existePorPrioridad = await prioridadesService.ExistePrioridad(Prioridad.Descripcion);
+        return existePorPrioridad;
+    }
+
+    public async Task Modificar()
+    {
+        if (!await Validar())
+        {
+            await prioridadesService.Guardar(Prioridad);
+            Prioridad = new Prioridades();
+            Volver();
+        }
+        else
+        {
+            Mensaje = "La Descripción de la Prioridad ya existe. Por favor, elija otra.";
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Prioridades/Index");
+    }
+}
