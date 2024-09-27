@@ -23,10 +23,9 @@
 
                 <label for="Tiempo" class="form-label"><strong>Tiempo</strong></label>
                 <InputNumber id="Tiempo" class="form-control" @bind-Value="Prioridad.Tiempo"></InputNumber>
-
             </div>
             <div class="card-footer">
-                <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <a href="/Prioridades/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
                 <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
             </div>
             @if (!string.IsNullOrEmpty(Mensaje))
@@ -68,16 +67,11 @@
         {
             await prioridadesService.Guardar(Prioridad);
             Prioridad = new Prioridades();
-            Volver();
+            navigation.NavigateTo("/Prioridades/Index");
         }
         else
         {
             Mensaje = "La Descripción de la Prioridad ya existe. Por favor, elija otra.";
         }
-    }
-
-    public void Volver()
-    {
-        navigation.NavigateTo("/Prioridades/Index");
     }
 }

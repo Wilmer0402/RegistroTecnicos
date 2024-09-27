@@ -28,7 +28,7 @@
 
 
             <div class="card-footer">
-                <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <a href="/Clientes/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
                 <button type="submit" class="btn btn-success bi bi-plus-square"> Crear</button>
             </div>
             @if (!string.IsNullOrEmpty(Mensaje))
@@ -62,7 +62,7 @@
         {
             await clientesService.Guardar(Cliente);
             Cliente = new Clientes();
-            Volver();
+            navigation.NavigateTo("/Clientes/Index");
         }
         else
         {
@@ -70,8 +70,4 @@
         }
     }
 
-    public void Volver()
-    {
-        navigation.NavigateTo("/Clientes/Index");
-    }
 }

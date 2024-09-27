@@ -30,7 +30,7 @@
                         @Mensaje
                     </div>
                 }
-                <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <a href="/TiposTecnicos/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
                 <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
             </div>
         </div>
@@ -67,7 +67,7 @@
         {
             await tiposTecnicosService.Guardar(tiposTecnico);
             tiposTecnico = new TiposTecnicos();
-            Volver();
+            navigation.NavigateTo("/TiposTecnicos/Index");
         }
         else
         {
@@ -75,8 +75,5 @@
         }
     }
 
-    public void Volver()
-    {
-        navigation.NavigateTo("/TiposTecnicos/Index");
-    }
+    
 }

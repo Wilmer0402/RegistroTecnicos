@@ -32,7 +32,7 @@
                         @Mensaje
                     </div>
                 }
-                <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <a href="/Clientes/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
                 <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
             </div>
         </div>
@@ -55,7 +55,7 @@
 
     public async Task<bool> Validar()
     {
-        
+
         var existePorNombre = await clientesService.ExistePorNombre(Cliente.Nombres);
         if (existePorNombre)
         {
@@ -71,7 +71,7 @@
         {
             await clientesService.Guardar(Cliente);
             Cliente = new Clientes();
-            Volver();
+            navigation.NavigateTo("/Clientes/Index");
         }
         else
         {
@@ -79,8 +79,5 @@
         }
     }
 
-    public void Volver()
-    {
-        navigation.NavigateTo("/Clientes/Index");
-    }
+  
 }

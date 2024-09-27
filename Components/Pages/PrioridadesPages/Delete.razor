@@ -22,7 +22,7 @@
 				</div>
 
 				<div class="card-footer">
-					<button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick=Volver> Volver</button>
+					<a href="/Prioridades/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
 					<button type="button" class="btn btn-success bi bi-trash" @onclick=EliminarPrioridad> Eliminar</button>
 				</div>
 			</div>
@@ -53,15 +53,12 @@
 
 		if (eliminar)
 		{
-			Volver();
+			navigation.NavigateTo("/Prioridades/Index");
 		}
 
 	}
 
-	public void Volver()
-	{
-		navigation.NavigateTo("/Prioridades/Index");
-	}
+	
 
 
 

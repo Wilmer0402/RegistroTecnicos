@@ -42,7 +42,7 @@
                         @Mensaje
                     </div>
                 }
-                <button type="button" class="btn btn-secondary text-white bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <a href="/Tecnicos/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
                 <button type="submit" class="btn btn-success bi bi-pencil-square"> Modificar</button>
             </div>
         </div>
@@ -86,17 +86,12 @@
             
             await tecnicoService.Guardar(tecnicos);
             tecnicos = new Tecnicos();
-            Volver();
+            navigation.NavigateTo("/Tecnicos/Index");
         }
 
         public async Task<bool> ValidarNombre()
         {
            
             return await tecnicoService.ExistePorNombre(tecnicos.NombresTecnico);
-        }
-
-        public void Volver()
-        {
-            navigation.NavigateTo("/Tecnicos/Index");
         }
     }
