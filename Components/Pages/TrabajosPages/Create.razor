@@ -3,6 +3,7 @@
 @inject TecnicoService tecnicoService
 @inject TrabajosService trabajosService
 @inject ClientesService clientesService
+@inject PrioridadesService prioridadesService
 @inject NavigationManager navigation
 
 <PageTitle>Crear Nuevo Trabajo</PageTitle>
@@ -33,7 +34,7 @@
             </InputSelect>
             <ValidationMessage For="@(() => Trabajos.ClienteId)" />
 
-            <label for="tecnico" class="form-label"><strong>Elija el Técnico</strong></label>
+            <label for="tecnico" class="form-label"><strong>Elija el T&eacute;cnico</strong></label>
             <InputSelect id="tecnico" class="form-select" @bind-Value="Trabajos.TecnicoId">
                 <option value="" selected disabled>Elija un Técnico</option>
                 @foreach (var tecnico in Tecnicos)
@@ -43,9 +44,21 @@
             </InputSelect>
             <ValidationMessage For="@(() => Trabajos.TecnicoId)" />
 
-            <label for="descripcion" class="form-label"><strong>Descripción del Trabajo</strong></label>
+            <label for="descripcion" class="form-label"><strong>Descripci&oacute;n del Trabajo</strong></label>
             <InputText id="descripcion" class="form-control" @bind-Value="Trabajos.Descripcion" />
             <ValidationMessage For="@(() => Trabajos.Descripcion)" />
+
+            <label for="prioridades" class="form-label"><strong>Elija la Prioridad</strong></label>
+            <InputSelect id="prioridades" class="form-select" @bind-Value="Trabajos.PrioridadId">
+                <option value="" selected disabled>Elija una Prioridad </option>
+                @foreach (var tecnico in Prioridades)
+                {
+                    <option value="@tecnico.PrioridadId">@tecnico.Descripcion</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => Trabajos.PrioridadId)" />
+
+            
 
             <label for="monto" class="form-label"><strong>Monto del Trabajo</strong></label>
             <InputNumber id="monto" class="form-control" @bind-Value="Trabajos.Monto" />
@@ -69,13 +82,15 @@
 @code {
     public List<Tecnicos> Tecnicos = new List<Tecnicos>();
     public List<Clientes> Clientes = new List<Clientes>();
+    public List<Prioridades> Prioridades = new List<Prioridades>();
     public Trabajos Trabajos { get; set; } = new Trabajos();
     string SueldoMensaje { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         Tecnicos = await tecnicoService.Listar(w => w.Id > 0);
-        Clientes = await clientesService.Listar(j => j.ClienteId > 0);
+        Clientes = await clientesService.Listar(w => w.ClienteId > 0);
+        Prioridades = await prioridadesService.Listar(w => w.PrioridadId > 0);
     }
 
     public async Task Guardar()

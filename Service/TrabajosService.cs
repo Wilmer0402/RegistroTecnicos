@@ -52,7 +52,7 @@ namespace RegistroTecnicos.Service
         public async Task<List<Trabajos>> Listar(Expression<Func<Trabajos, bool>> criterio)
         {
             return await _context.Trabajos
-                .Include(w => w.Tecnicos).Include( w => w.Clientes)
+                .Include(w => w.Tecnicos).Include( w => w.Clientes).Include(w => w.Prioridades)
                 .AsNoTracking()
                 .Where(criterio)
                 .ToListAsync();

@@ -3,6 +3,7 @@
 @inject TrabajosService trabajosService
 @inject TecnicoService tecnicosService
 @inject ClientesService clientesService
+@inject PrioridadesService prioridadesService
 @inject NavigationManager navigation
 
 <PageTitle>Registro de Trabajos</PageTitle>
@@ -44,6 +45,7 @@
                     <th>T&eacute;cnicoId</th>
                     <th>T&eacute;cnico</th>
                     <th>Descripci&oacute;n</th>
+                    <th>Prioridades</th>
                     <th>Monto</th>
                     <th>Detalles</th>
                     <th>Modificar</th>
@@ -61,6 +63,7 @@
                         <td class="text-center">@trabajo.TecnicoId</td> 
                         <td class="text-center">@trabajo.Tecnicos.NombresTecnico</td>
                         <td class="text-center">@trabajo.Descripcion</td> 
+                        <td class="text-center">@trabajo.Prioridades.Descripcion</td>
                         <td class="text-center">@trabajo.Monto.ToString("N2")</td>
 
                         <td class="text-center">
