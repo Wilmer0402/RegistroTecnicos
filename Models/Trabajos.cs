@@ -35,6 +35,11 @@ namespace RegistroTecnicos.Models
 
         public Tecnicos Tecnicos { get; set; }
 
+        [ForeignKey("Prioridades")]
+
+        public int PrioridadId { get; set; }
+
+        public Prioridades Prioridades { get; set; }
 
 
     }
