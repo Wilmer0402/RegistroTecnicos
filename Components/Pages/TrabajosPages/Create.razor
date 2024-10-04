@@ -48,7 +48,7 @@
             <InputText id="descripcion" class="form-control" @bind-Value="Trabajos.Descripcion" />
             <ValidationMessage For="@(() => Trabajos.Descripcion)" />
 
-            <label for="prioridades" class="form-label"><strong>Elija la Prioridada</strong></label>
+            <label for="prioridades" class="form-label"><strong>Elija la Prioridad</strong></label>
             <InputSelect id="prioridades" class="form-select" @bind-Value="Trabajos.PrioridadId">
                 <option value="" selected disabled>Elija una Prioridad</option>
                 @foreach (var tecnico in Prioridades)

@@ -2,6 +2,7 @@
 @page "/Trabajos/Details/{TrabajoId:int}"
 @rendermode InteractiveServer
 @inject TrabajosService trabajosService
+@inject PrioridadesService prioridadesService
 @inject NavigationManager navigation
 
 
@@ -28,6 +29,7 @@
                 <p class="mb-0"><strong>T&eacute;cnico Id:</strong>@Trabajo.TecnicoId</p>
                 <p class="mb-0"><strong>T&eacute;cnico :</strong> @Trabajo.Tecnicos.NombresTecnico</p>
                 <p class="mb-0"><strong>Descripci&oacute;n :</strong> @Trabajo.Descripcion</p>
+                <p class="mb-0"><strong>Prioridad :</strong> @Trabajo.Prioridades.Descripcion</p>
                 <p class="mb-0"><strong>Monto :</strong> @Trabajo.Monto.ToString("N2")</p>
             </div>
         }
@@ -47,6 +49,10 @@
     protected override async Task OnInitializedAsync()
     {
         Trabajo = await trabajosService.Buscar(TrabajoId);
-    }
 
+        if (Trabajo.Prioridades == null)
+        {
+            Trabajo.Prioridades = await prioridadesService.Buscar(Trabajo.PrioridadId);
+        }
+    }
 }

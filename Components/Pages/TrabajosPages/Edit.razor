@@ -3,6 +3,7 @@
 @inject TrabajosService trabajosService
 @inject ClientesService clientesService
 @inject TecnicoService tecnicoService
+@inject PrioridadesService prioridadesService
 @inject NavigationManager navigation
 
 <PageTitle>Editar Trabajo</PageTitle>
@@ -18,15 +19,13 @@
 
             <!-- Body -->
             <div class="card-body">
-                <!-- Trabajo ID -->
+
                 <label for="id" class="form-label"><strong>ID</strong></label>
                 <InputNumber id="id" class="form-control" @bind-Value="trabajo.TrabajoId" readonly></InputNumber>
 
-                <!-- Fecha -->
                 <label for="fecha" class="form-label"><strong>Fecha</strong></label>
                 <InputDate id="fecha" class="form-control" @bind-Value="trabajo.Fecha"></InputDate>
 
-                <!-- Cliente -->
                 <label for="cliente" class="form-label"><strong>Cliente</strong></label>
                 <InputSelect id="cliente" class="form-control" @bind-Value="trabajo.ClienteId">
                     @foreach (var cliente in clientes)
@@ -35,8 +34,7 @@
                     }
                 </InputSelect>
 
-                <!-- Técnico -->
-                <label for="tecnico" class="form-label"><strong>Técnico</strong></label>
+                <label for="tecnico" class="form-label"><strong>T&eacute;cnico</strong></label>
                 <InputSelect id="tecnico" class="form-control" @bind-Value="trabajo.TecnicoId">
                     @foreach (var tecnico in tecnicos)
                     {
@@ -44,12 +42,18 @@
                     }
                 </InputSelect>
 
-                <!-- Descripción -->
-                <label for="descripcion" class="form-label"><strong>Descripción</strong></label>
+                <label for="descripcion" class="form-label"><strong>Descripci&oacute;n</strong></label>
                 <InputTextArea id="descripcion" class="form-control" @bind-Value="trabajo.Descripcion"></InputTextArea>
                 <ValidationMessage For="@(() => trabajo.Descripcion)" />
 
-                <!-- Monto -->
+                <label for="prioridades" class="form-label"><strong>Prioridades</strong></label>
+                <InputSelect id="prioridades" class="form-control" @bind-Value="trabajo.PrioridadId">
+                    @foreach (var prioridad in prioridades)
+                    {
+                        <option value="@prioridad.PrioridadId">@prioridad.Descripcion</option>
+                    }
+                </InputSelect>
+
                 <label for="monto" class="form-label"><strong>Monto</strong></label>
                 <InputNumber id="monto" class="form-control" @bind-Value="trabajo.Monto"></InputNumber>
                 <ValidationMessage For="@(() => trabajo.Monto)" />
@@ -77,14 +81,17 @@
     public Trabajos trabajo { get; set; } = new Trabajos();
     public List<Clientes> clientes { get; set; } = new List<Clientes>();
     public List<Tecnicos> tecnicos { get; set; } = new List<Tecnicos>();
+    public List<Prioridades> prioridades { get; set; } = new List<Prioridades>();
     public string? Mensaje { get; set; }
     public Clientes? clienteSeleccionado { get; set; } = new Clientes();
     public Tecnicos? tecnicoSeleccionado { get; set; } = new Tecnicos();
+    public Prioridades? prioridadesSeleccionado { get; set; } = new Prioridades();
 
     protected override async Task OnInitializedAsync()
     {
         tecnicos = await tecnicoService.Listar(w => w.Id > 0);
         clientes = await clientesService.Listar(w => w.ClienteId > 0);
+        prioridades = await prioridadesService.Listar(w => w.PrioridadId > 0);
 
         if (TrabajoId > 0)
         {
@@ -98,6 +105,11 @@
             if (trabajo.TecnicoId > 0)
             {
                 tecnicoSeleccionado = await tecnicoService.Buscar(trabajo.TecnicoId);
+            }
+
+            if (trabajo.PrioridadId > 0)
+            {
+                prioridadesSeleccionado = await prioridadesService.Buscar(trabajo.PrioridadId);
             }
         }
     }
@@ -122,8 +134,6 @@
         }
     }
 
-
-
     public async Task EnviarMensajeWhatsapp()
     {
         if (clienteSeleccionado == null || string.IsNullOrEmpty(clienteSeleccionado.WhatsApp))
@@ -138,7 +148,7 @@
             return;
         }
 
-        string mensaje = $"Hola, este es un mensaje automático para informarle que su trabajo ha sido aceptado con los Siguientes Datos:\n\n" +
+        string mensaje = $"Hola, este es un mensaje automático para informarle que su trabajo ha sido aceptado con los siguientes datos:\n\n" +
                          $"Descripción del Trabajo: {trabajo.Descripcion}\n" +
                          $"Técnico Asignado: {tecnicoSeleccionado.NombresTecnico}";
 
