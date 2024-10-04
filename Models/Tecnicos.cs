@@ -32,3 +32,4 @@ namespace RegistroTecnicos.Models
         public TiposTecnicos? TiposTecnicos { get; set; }
     }
 }
+	
