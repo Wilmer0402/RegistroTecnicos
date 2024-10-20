@@ -5,14 +5,14 @@
 @inject NavigationManager navigation
 
 <PageTitle>Editar T&eacute;cnico</PageTitle>
+
 <EditForm Model="tecnicos" OnValidSubmit="Modificar">
     <DataAnnotationsValidator />
     <div class="container">
         <div class="card shadow-lg">
-            <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
-                <i class="bi bi-pencil-square" style="font-size: 2rem;"></i>
-                <h4 style="margin: 0 15px;"><strong>Editar Técnico:</strong></h4>
-            </div>
+            <div class="card-header">
+                <h5 class="card-title">Editar T&eacute;cnico</h5>
+                </div>
             <div class="card-body">
                 @*Datos*@
                 <label for="id" class="form-label"><strong>ID</strong></label>

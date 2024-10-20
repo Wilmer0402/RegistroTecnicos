@@ -5,34 +5,32 @@
 
 <PageTitle>Prioridades</PageTitle>
 <div class="container">
-	<div class="card-header bg-success text-white text-center">
-		<div style="display: flex; align-items: center; justify-content: center;">
-			<i class="bi bi-person-video3" style="font-size: 2rem;"></i>
-			<h3 style="margin: 0 15px;"><strong>Prioridades</strong></h3>
-			<i class="bi bi-person-video3" style="font-size: 2rem;"></i>
+	<div class="card shadow-lg">
+	<div class="card-header  text-black text-center">
+		<h5><strong>Prioridades</strong></h5>
 		</div>
 
-	</div>
-	<div class="row">
-		<div class="col-md-3">
+	<div class="card-body">
+		<div class="row mb-3">
+		<div class="col-md-6">
 			<label for="filtro" class="form-label"><strong>Filtrar por:</strong></label>
 			<InputSelect id="filtro" class="form-select" @bind-Value="filtro">
 				<option value="id">ID</option>
 				<option value="Descripcion">Descripci&oacute;n </option>
 			</InputSelect>
 		</div>
-		<div class="col-md-6">
-			<label for="valorFiltro" class="form-label"><strong>B&uacute;squeda</strong></label>
+		<div class="col-md-6 d-flex align-items-end">
 			<div class="input-group">
 				<InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeholder="Buscar" />
 				<button @onclick="Buscar" class="btn btn-secondary bi bi-search" type="button"> Buscar</button>
 			</div>
 		</div>
 	</div>
+		<a href="Prioridades/Create" class="btn btn-success bi bi-plus-square-fill mt-3"> Crear</a>
 
-	<div class="card-body">
-		<table class="table table-light table-bordered">
-			<thead class="table table-striped text-center bg-success text-white">
+	
+		<table class="table table-hover">
+			<thead class="table table-striped text-center  text-black">
 				<tr>
 					<th>PrioridadId</th>
 					<th>Descripci&oacute;n </th>
@@ -51,21 +49,23 @@
 						<td class="text-center">@Prioridad.Descripcion</td>
 						<td class="text-center">@Prioridad.Tiempo (Minutos)</td>
 						<td class="text-center">
-							<a href="/Prioridades/Details/@Prioridad.PrioridadId" class="btn btn-secondary text-white bi bi-eye"></a>
+								<a href="/Prioridades/Details/@Prioridad.PrioridadId" class="btn btn-outline-dark  bi bi-eye"></a>
 						</td>
 						<td class="text-center">
-							<a href="/Prioridades/Edit/@Prioridad.PrioridadId" class="btn btn-secondary text-white bi bi-pencil-square"></a>
+								<a href="/Prioridades/Edit/@Prioridad.PrioridadId" class="btn btn-outline-dark  bi bi-pencil-square"></a>
 						</td>
 						<td class="text-center">
-							<a href="/Prioridades/Delete/@Prioridad.PrioridadId" class="btn btn-secondary bi bi-trash"></a>
+								<a href="/Prioridades/Delete/@Prioridad.PrioridadId" class="btn btn-outline-dark bi bi-trash"></a>
 						</td>
 					</tr>
 				}
 			</tbody>
 		</table>
 	</div>
-	<a href="Prioridades/Create" class="btn btn-success bi bi-plus-square-fill mt-3"> Crear</a>
 </div>
+</div>
+
+
 
 @code {
 	public List<Prioridades> Prioridad = new List<Prioridades>();

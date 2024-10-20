@@ -17,5 +17,22 @@ namespace RegistroTecnicos.DAL
         public DbSet<Trabajos> Trabajos{ get; set; }
 
         public DbSet<Prioridades> Prioridades { get; set; }
+
+        public DbSet<Articulos> Articulos { get; set; }
+
+        public DbSet<TrabajosDetalles> TrabajosDetalles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Articulos>().HasData(new List<Articulos>()
+            {
+                new Articulos(){ArticulosId=1, Descripcion="RJ45", Costo= 150, Precio= 200, Existencia= 200},
+                new Articulos(){ArticulosId=2, Descripcion="MiniJack", Costo= 50, Precio= 65, Existencia= 100},
+                new Articulos(){ArticulosId=3, Descripcion="Cable USB", Costo= 250,Precio= 300, Existencia= 125},
+
+
+            });
+        }
     }
 }
