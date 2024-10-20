@@ -79,9 +79,11 @@
                 </tbody>
             </table>
         </div>
+        <div class="card-footer">
+            <p><strong>Total de Trabajos: </strong>@trabajos.Count</p>
     </div>
 </div>
-
+</div>
 @code {
     public List<Trabajos> trabajos = new List<Trabajos>();
     public string FiltroSeleccionado { get; set; } = "ID";
