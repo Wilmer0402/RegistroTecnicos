@@ -137,6 +137,7 @@
     public Trabajos Trabajos { get; set; } = new Trabajos();
     string SueldoMensaje { get; set; } = string.Empty;
 
+
     protected override async Task OnInitializedAsync()
     {
         Tecnicos = await tecnicoService.Listar(w => w.Id > 0);
@@ -148,6 +149,12 @@
     public async Task Guardar()
     {
         SueldoMensaje = string.Empty;
+
+        if(Trabajos.TrabajosDetalles.Count ==0)
+        {
+            SueldoMensaje = "Por Favor, Debes de agregar al menos un Detalle del Articulo";
+            return;
+        }
 
         if (string.IsNullOrWhiteSpace(Trabajos.Descripcion))
         {
