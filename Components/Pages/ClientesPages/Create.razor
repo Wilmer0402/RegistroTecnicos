@@ -6,12 +6,13 @@
 <PageTitle>Crear Clientes</PageTitle>
 <EditForm Model="Cliente" OnValidSubmit="Modificar">
     <DataAnnotationsValidator />
+
     <div class="container">
         <div class="card shadow-lg">
-            <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
-                <i class="bi bi-person-fill-add" style="font-size: 2rem;"></i>
-                <h4 style="margin: 0 15px;"><strong>Crear Cliente:</strong></h4>
+            <div class="card-header">
+                <h5 class="card-title">Crear Clientes</h5>
             </div>
+
             <div class="card-body">
                 <!-- Datos -->
                 <label for="id" class="form-label"><strong>ID</strong></label>
@@ -24,7 +25,7 @@
                 <label for="WhatsApp" class="form-label"><strong>WhatsApp</strong></label>
                 <InputText id="WhatsApp" class="form-control" @bind-Value="Cliente.WhatsApp"></InputText>
                 <ValidationMessage For="@(()=> Cliente.WhatsApp)"></ValidationMessage>
-            </div>
+           
 
 
             <div class="card-footer">
@@ -38,6 +39,7 @@
                 </div>
             }
         </div>
+    </div>
     </div>
 </EditForm>
 

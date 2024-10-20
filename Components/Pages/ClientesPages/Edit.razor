@@ -6,12 +6,13 @@
 <PageTitle>Editar Cliente</PageTitle>
 <EditForm Model="Cliente" OnValidSubmit="Modificar">
     <DataAnnotationsValidator />
+
     <div class="container">
         <div class="card shadow-lg">
-            <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
-                <i class="bi bi-pencil-square" style="font-size: 2rem;"></i>
-                <h4 style="margin: 0 15px;"><strong>Editar Cliente:</strong></h4>
+            <div class="card-header">
+              <h5 class="card-title">Editar Clientes</h5>
             </div>
+
             <div class="card-body">
                 @*Datos*@
                 <label for="id" class="form-label"><strong>ID</strong></label>
