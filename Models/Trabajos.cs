@@ -41,6 +41,8 @@ namespace RegistroTecnicos.Models
 
         public Prioridades Prioridades { get; set; }
 
+        public ICollection<TrabajosDetalles> TrabajosDetalles { get; set; } = new List<TrabajosDetalles>();
+
 
     }
 }
