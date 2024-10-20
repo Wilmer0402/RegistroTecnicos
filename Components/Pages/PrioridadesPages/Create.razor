@@ -6,12 +6,13 @@
 <PageTitle>Crear Prioridades</PageTitle>
 <EditForm Model="Prioridad" OnValidSubmit="Modificar">
     <DataAnnotationsValidator />
+
     <div class="container">
         <div class="card shadow-lg">
-            <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
-                <i class="bi bi-person-fill-add" style="font-size: 2rem;"></i>
-                <h4 style="margin: 0 15px;"><strong>Crear Prioridades:</strong></h4>
+            <div class="card-header">
+              <h5 class="card-title">Crear Prioridades</h5>
             </div>
+
             <div class="card-body">
                 @*Datos*@
                 <label for="id" class="form-label"><strong>ID</strong></label>
@@ -23,19 +24,24 @@
 
                 <label for="Tiempo" class="form-label"><strong>Tiempo</strong></label>
                 <InputNumber id="Tiempo" class="form-control" @bind-Value="Prioridad.Tiempo"></InputNumber>
-            </div>
+                </div>
+            
             <div class="card-footer">
                 <a href="/Prioridades/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
                 <button type="submit" class="btn btn-success bi bi-floppy-fill"> Guardar</button>
-            </div>
+           
             @if (!string.IsNullOrEmpty(Mensaje))
             {
                 <div class="alert alert-warning mt-3" role="alert">
                     @Mensaje
                 </div>
+          
+
             }
         </div>
     </div>
+    </div>
+    
 </EditForm>
 
 @code {

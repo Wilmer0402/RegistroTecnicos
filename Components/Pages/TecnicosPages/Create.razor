@@ -6,33 +6,41 @@
 @inject IJSRuntime js
 
 <PageTitle>Crear Nuevo T&eacute;cnico</PageTitle>
+
 <EditForm Model="tecnico" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
+
     <div class="container"></div>
     <div class="card shadow-lg">
-        <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
-            <i class="bi bi-person-fill-add" style="font-size: 2rem;"></i>
-            <h4 style="margin: 0 15px;"><strong>Crear Nuevo T&eacute;cnico:</strong></h4>
+        <div class="card-header">
+            <h5 class="card-title">Crear Nuevo T&eacute;cnico</h5>
         </div>
+
         <div class="card-body">
-            <label for="id" class="form-label"><strong>ID</strong></label>
-            <InputNumber id="id" class="form-control" @bind-Value="tecnico.TecnicoId" @onchange="ValidarId"></InputNumber>
-            <ValidationMessage For="@(() => tecnico.TecnicoId)"></ValidationMessage>
+            <div class="mb-3">
+                <label for="id" class="form-label"><strong>ID</strong></label>
+                <InputNumber id="id" class="form-control" @bind-Value="tecnico.TecnicoId" @onchange="ValidarId" />
+                <ValidationMessage For="@(() => tecnico.TecnicoId)"></ValidationMessage>
+            </div>
 
-            <label for="nombre" class="form-label"><strong>Nombre T&eacute;cnico</strong></label>
-            <InputText id="nombre" class="form-control" @bind-Value="tecnico.NombresTecnico" @onchange="ValidarNombre"></InputText>
-            <ValidationMessage For="@(() => tecnico.NombresTecnico)"></ValidationMessage>
+            <div class="mb-3">
+                <label for="nombre" class="form-label"><strong>Nombre T&eacute;cnico</strong></label>
+                <InputText id="nombre" class="form-control" @bind-Value="tecnico.NombresTecnico" @onchange="ValidarNombre" />
+                <ValidationMessage For="@(() => tecnico.NombresTecnico)"></ValidationMessage>
 
-            @if (!string.IsNullOrEmpty(mensajeErrorNombre))
-            {
-                <div class="text-danger">
-                    @mensajeErrorNombre
-                </div>
-            }
+                @if (!string.IsNullOrEmpty(mensajeErrorNombre))
+                {
+                    <div class="text-danger">
+                        @mensajeErrorNombre
+                    </div>
+                }
+            </div>
 
-            <label for="sueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
-            <InputNumber id="sueldoHora" class="form-control" @bind-Value="tecnico.SueldoHora" Step="0.01" />
-            <ValidationMessage For="@(() => tecnico.SueldoHora)"></ValidationMessage>
+            <div class="mb-3">
+                <label for="sueldoHora" class="form-label"><strong>Sueldo por Hora</strong></label>
+                <InputNumber id="sueldoHora" class="form-control" @bind-Value="tecnico.SueldoHora" Step="0.01" />
+                <ValidationMessage For="@(() => tecnico.SueldoHora)"></ValidationMessage>
+            </div>
 
             @if (!string.IsNullOrEmpty(mensajeError))
             {
@@ -40,22 +48,22 @@
                     @mensajeError
                 </div>
             }
-        </div>
 
-        <div class="col-5 ms-3">
-            <label class="form-label"><strong>Descripci&oacute;n</strong></label>
-            <InputSelect class="form-select" @bind-Value="tecnico.Id">
-                <option value="" selected disabled>Elije una Opción</option>
-                @foreach (var Tipo in TiposTecnicos)
-                {
-                    <option value="@Tipo.Id">@Tipo.Descripcion</option>
-                }
-            </InputSelect>
-        </div>
+            <div class="mb-3">
+                <label class="form-label"><strong>Descripción</strong></label>
+                <InputSelect class="form-select" @bind-Value="tecnico.Id">
+                    <option value="" selected disabled>Elije una Opción</option>
+                    @foreach (var Tipo in TiposTecnicos)
+                    {
+                        <option value="@Tipo.Id">@Tipo.Descripcion</option>
+                    }
+                </InputSelect>
+            </div>
 
-        <div class="card-footer">
-            <a href="/Tecnicos/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
-            <button type="submit" class="btn btn-success bi bi-floppy-fill"> Guardar</button>
+            <div class="card-footer">
+                <a href="/Tecnicos/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
+                <button type="submit" class="btn btn-success bi bi-floppy-fill"> Guardar</button>
+            </div>
         </div>
     </div>
 </EditForm>
@@ -100,7 +108,7 @@
         {
             if (await tecnicoService.Existe(id))
             {
-                await js.InvokeVoidAsync("alert", "Error el ID ya Existe. Por favor, elija otro ID.");
+                await js.InvokeVoidAsync("alert", "Error el ID ya existe. Por favor, elija otro ID.");
             }
         }
     }

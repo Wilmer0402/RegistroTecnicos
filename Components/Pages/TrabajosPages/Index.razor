@@ -9,84 +9,82 @@
 <PageTitle>Registro de Trabajos</PageTitle>
 
 <div class="container">
-    <div class="card-header bg-success text-white text-center">
-        <div style="display: flex; align-items: center; justify-content: center;">
-
-            <i class="bi bi-person-workspace" style="font-size: 2rem;"></i>
-            <h3 style="margin: 0 15px;"><strong>Registro de Trabajos</strong></h3>
-            <i class="bi bi-person-workspace" style="font-size: 2rem;"></i>
+    <div class="card shadow-lg">
+        <div class="card-header text-black text-center">
+            <h5><strong>Registro de Trabajos</strong></h5>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-3">
-            <label for="filtro" class="form-label"><strong>Filtrar por:</strong></label>
-            <InputSelect id="filtro" class="form-select" @bind-Value="filtro">
-                <option value="ID">ID</option>
-            </InputSelect>
-        </div>
-        <div class="col-md-6">
-            <label for="valorFiltro" class="form-label"><strong>Búsqueda</strong></label>
-            <div class="input-group">
-                <InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeholder="Buscar" />
-                <button @onclick="Buscar" class="btn btn-secondary bi bi-search" type="button"> Buscar</button>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="filtro">Filtrar por:</label>
+                    <select id="filtro" class="form-select" @bind="FiltroSeleccionado">
+                        <option value="ID">ID</option>
+                    </select>
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <div class="input-group">
+                        <InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeholder="Buscar" />
+                        <button @onclick="Buscar" class="btn btn-secondary bi bi-search"> Buscar</button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="card-body">
-        <table class="table table-light table-bordered">
-            <thead class="table table-striped text-center bg-success text-white">
-                <tr>
-                    <th>TrabajoId</th>
-                    <th>Fecha</th>
-                    <th>ClienteId</th>
-                    <th>Cliente</th>
-                    <th>T&eacute;cnicoId</th>
-                    <th>T&eacute;cnico</th>
-                    <th>Descripci&oacute;n</th>
-                    <th>Prioridades</th>
-                    <th>Monto</th>
-                    <th>Detalles</th>
-                    <th>Modificar</th>
-                    <th>Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var trabajo in trabajos)
-                {
+            @* Botón Crear Trabajo *@
+            <a href="/Trabajos/Create" class="btn btn-success bi bi-plus-square-fill mt-3"> Crear</a>
+
+            @* Tabla de Trabajos *@
+            <table class="table table-hover">
+                <thead class="table table-striped text-center text-black">
                     <tr>
-                        <td class="text-center">@trabajo.TrabajoId</td>
-                        <td class="text-center">@trabajo.Fecha.ToShortDateString()</td>
-                        <td class="text-center">@trabajo.ClienteId</td> 
-                        <td class="text-center">@trabajo.Clientes.Nombres</td>
-                        <td class="text-center">@trabajo.TecnicoId</td> 
-                        <td class="text-center">@trabajo.Tecnicos.NombresTecnico</td>
-                        <td class="text-center">@trabajo.Descripcion</td> 
-                        <td class="text-center">@trabajo.Prioridades.Descripcion</td>
-                        <td class="text-center">@trabajo.Monto.ToString("N2")</td>
-
-                        <td class="text-center">
-                            <a href="/Trabajos/Details/@trabajo.TrabajoId" class="btn btn-secondary text-white bi bi-eye"></a>
-                        </td>
-                        <td class="text-center">
-                            <a href="/Trabajos/Edit/@trabajo.TrabajoId" class="btn btn-secondary text-white bi bi-pencil-square"></a>
-                        </td>
-                        <td class="text-center">
-                            <a href="/Trabajos/Delete/@trabajo.TrabajoId" class="btn btn-secondary bi bi-trash"></a>
-                        </td>
+                        <th>TrabajoId</th>
+                        <th>Fecha</th>
+                        <th>ClienteId</th>
+                        <th>Cliente</th>
+                        <th>T&eacute;cnicoId</th>
+                        <th>T&eacute;cnico</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Prioridades</th>
+                        <th>Monto</th>
+                        <th>Detalles</th>
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
                     </tr>
-                }
-            </tbody>
+                </thead>
+                <tbody>
+                    @foreach (var trabajo in trabajos)
+                    {
+                        <tr>
+                            <td class="text-center">@trabajo.TrabajoId</td>
+                            <td class="text-center">@trabajo.Fecha.ToShortDateString()</td>
+                            <td class="text-center">@trabajo.ClienteId</td>
+                            <td class="text-center">@trabajo.Clientes.Nombres</td>
+                            <td class="text-center">@trabajo.TecnicoId</td>
+                            <td class="text-center">@trabajo.Tecnicos.NombresTecnico</td>
+                            <td class="text-center">@trabajo.Descripcion</td>
+                            <td class="text-center">@trabajo.Prioridades.Descripcion</td>
+                            <td class="text-center">@trabajo.Monto.ToString("N2")</td>
 
-        </table>
-        <a href="/Trabajos/Create" class="btn btn-success bi bi-plus-square-fill mt-3"> Crear</a>
+                            <td class="text-center">
+                                <a href="/Trabajos/Details/@trabajo.TrabajoId" class="btn btn-outline-dark bi bi-eye"></a>
+                            </td>
+                            <td class="text-center">
+                                <a href="/Trabajos/Edit/@trabajo.TrabajoId" class="btn btn-outline-dark bi bi-pencil-square"></a>
+                            </td>
+                            <td class="text-center">
+                                <a href="/Trabajos/Delete/@trabajo.TrabajoId" class="btn btn-outline-dark bi bi-trash"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
 @code {
     public List<Trabajos> trabajos = new List<Trabajos>();
-    public string filtro = "ID";
+    public string FiltroSeleccionado { get; set; } = "ID";
     public string valorFiltro = "";
 
     protected override async Task OnInitializedAsync()
@@ -98,7 +96,7 @@
     {
         if (!string.IsNullOrWhiteSpace(valorFiltro))
         {
-            switch (filtro)
+            switch (FiltroSeleccionado)
             {
                 case "ID":
                     if (int.TryParse(valorFiltro, out int id))

@@ -6,12 +6,14 @@
 <PageTitle>Editar Prioridades</PageTitle>
 <EditForm Model="Prioridad" OnValidSubmit="Modificar">
     <DataAnnotationsValidator />
+
     <div class="container">
         <div class="card shadow-lg">
-            <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
-                <i class="bi bi-pencil-square" style="font-size: 2rem;"></i>
-                <h4 style="margin: 0 15px;"><strong>Editar Prioridades:</strong></h4>
+            <div class="card-header">
+
+                <h5 class="card-title">Editar Prioridades</h5>
             </div>
+
             <div class="card-body">
                 @*Datos*@
                 <label for="Id" class="form-label"><strong>ID</strong></label>
@@ -24,6 +26,7 @@
                 <label for="Tiempo" class="form-label"><strong>Tiempo (Minutos)</strong></label>
                 <InputNumber id="Tiempo" class="form-control" @bind-Value="Prioridad.Tiempo"></InputNumber>
             </div>
+
             <div class="card-footer">
                 @if (!string.IsNullOrEmpty(Mensaje))
                 {

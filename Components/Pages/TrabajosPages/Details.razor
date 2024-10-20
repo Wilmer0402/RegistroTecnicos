@@ -3,37 +3,62 @@
 @rendermode InteractiveServer
 @inject TrabajosService trabajosService
 @inject PrioridadesService prioridadesService
+@inject ArticulosService articulosService
 @inject NavigationManager navigation
 
-
 <PageTitle>Detalles del Trabajo</PageTitle>
-<div class="container">
-    <div class="card shadow-lg">
-        <!-- Header -->
-        <div class="card-header bg-success text-white text-center" style="display: flex; align-items: center; justify-content: center;">
-            <i class="bi bi-eye" style="font-size: 2rem;"></i>
-            <h4 style="margin: 0 15px;"><strong>Detalles del Trabajo:</strong></h4>
-        </div>
+
+<div class="card shadow-lg">
+    <!-- Header -->
+    <div class="card-header bg-white text-black text-center" style="display: flex; align-items: center; justify-content: center;">
+        <h4 style="margin: 0 15px;"><strong>Detalles del Trabajo:</strong></h4>
     </div>
+
     <!-- Body -->
     <div class="card-body">
         <h5><strong>Detalles del Trabajo:</strong></h5>
-        @if (Trabajo != null)
+        @if (trabajo != null)
         {
             <!-- Datos -->
             <div class="mb-1">
-                <p class="mb-0"><strong>Trabajo Id :</strong> @Trabajo.TrabajoId</p>
-                <p class="mb-0"><strong>Fecha :</strong> @Trabajo.Fecha.ToShortDateString()</p>
-                <p class="mb-0"><strong>Cliente Id:</strong>@Trabajo.ClienteId</p>
-                <p class="mb-0"><strong>Cliente :</strong> @Trabajo.Clientes.Nombres</p>
-                <p class="mb-0"><strong>T&eacute;cnico Id:</strong>@Trabajo.TecnicoId</p>
-                <p class="mb-0"><strong>T&eacute;cnico :</strong> @Trabajo.Tecnicos.NombresTecnico</p>
-                <p class="mb-0"><strong>Descripci&oacute;n :</strong> @Trabajo.Descripcion</p>
-                <p class="mb-0"><strong>Prioridad :</strong> @Trabajo.Prioridades.Descripcion</p>
-                <p class="mb-0"><strong>Monto :</strong> @Trabajo.Monto.ToString("N2")</p>
+                <p class="mb-0"><strong>Trabajo Id:</strong> @trabajo.TrabajoId</p>
+                <p class="mb-0"><strong>Fecha:</strong> @trabajo.Fecha.ToShortDateString()</p>
+                <p class="mb-0"><strong>Cliente Id:</strong> @trabajo.ClienteId</p>
+                <p class="mb-0"><strong>Cliente:</strong> @trabajo.Clientes.Nombres</p>
+                <p class="mb-0"><strong>Técnico Id:</strong> @trabajo.TecnicoId</p>
+                <p class="mb-0"><strong>Técnico:</strong> @trabajo.Tecnicos.NombresTecnico</p>
+                <p class="mb-0"><strong>Descripción:</strong> @trabajo.Descripcion</p>
+                <p class="mb-0"><strong>Prioridad:</strong> @trabajo.Prioridades.Descripcion</p>
+                <p class="mb-0"><strong>Monto:</strong> @trabajo.Monto.ToString("N2")</p>
             </div>
+
+            <h5><strong>Artículos Utilizados:</strong></h5>
+            <table class="table table-light">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detalle in trabajo.TrabajosDetalles)
+                    {
+                        <tr>
+                            <td>@detalle.Articulos?.Descripcion</td>
+                            <td>@detalle.Cantidad</td>
+                            <td>@detalle.Precio.ToString("N2")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-danger">No se encontraron detalles para el trabajo solicitado.</p>
         }
     </div>
+
     <!-- Footer -->
     <div class="card-footer">
         <a href="/Trabajos/Index" class="btn btn-secondary text-white bi bi-arrow-90deg-left"> Volver</a>
@@ -44,15 +69,20 @@
     [Parameter]
     public int TrabajoId { get; set; }
 
-    public Trabajos Trabajo { get; set; } = new Trabajos();
+    public Trabajos trabajo { get; set; } = new Trabajos();
 
     protected override async Task OnInitializedAsync()
     {
-        Trabajo = await trabajosService.Buscar(TrabajoId);
+        trabajo = await trabajosService.Buscar(TrabajoId);
 
-        if (Trabajo.Prioridades == null)
+        if (trabajo.Prioridades == null)
         {
-            Trabajo.Prioridades = await prioridadesService.Buscar(Trabajo.PrioridadId);
+            trabajo.Prioridades = await prioridadesService.Buscar(trabajo.PrioridadId);
+        }
+
+        foreach (var detalle in trabajo.TrabajosDetalles)
+        {
+            detalle.Articulos = await articulosService.Buscar(detalle.ArticulosId);
         }
     }
 }
