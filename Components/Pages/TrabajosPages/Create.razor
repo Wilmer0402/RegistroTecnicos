@@ -32,7 +32,7 @@
             <!-- Selección de Cliente -->
             <label for="cliente" class="form-label"><strong>Elija el Cliente</strong></label>
             <InputSelect id="cliente" class="form-select" @bind-Value="Trabajos.ClienteId">
-                <option value="" selected disabled>Elija un Cliente</option>
+                <option value="0" selected disabled>Elija un Cliente</option>
                 @foreach (var cliente in Clientes)
                 {
                     <option value="@cliente.ClienteId">@cliente.Nombres</option>
@@ -43,7 +43,7 @@
             <!-- Selección de Técnico -->
             <label for="tecnico" class="form-label"><strong>Elija el Técnico</strong></label>
             <InputSelect id="tecnico" class="form-select" @bind-Value="Trabajos.TecnicoId">
-                <option value="" selected disabled>Elija un Técnico</option>
+                <option value="0" selected disabled>Elija un Técnico</option>
                 @foreach (var tecnico in Tecnicos)
                 {
                     <option value="@tecnico.TecnicoId">@tecnico.NombresTecnico</option>
@@ -59,7 +59,7 @@
             <!-- Selección de Prioridad -->
             <label for="prioridades" class="form-label"><strong>Elija la Prioridad</strong></label>
             <InputSelect id="prioridades" class="form-select" @bind-Value="Trabajos.PrioridadId">
-                <option value="" selected disabled>Elija una Prioridad</option>
+                <option value="0" selected disabled>Elija una Prioridad</option>
                 @foreach (var prioridad in Prioridades)
                 {
                     <option value="@prioridad.PrioridadId">@prioridad.Descripcion</option>

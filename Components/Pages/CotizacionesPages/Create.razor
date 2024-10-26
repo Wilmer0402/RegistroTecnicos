@@ -32,7 +32,7 @@
                 @* Cliente *@
                 <label for="cliente" class="form-label"><strong>Elija el Cliente</strong></label>
                 <InputSelect id="cliente" class="form-select" @bind-Value="Cotizaciones.ClienteId">
-                    <option value="" selected disabled>Elija un Cliente</option>
+                    <option value="0" selected disabled>Elija un Cliente</option>
                     @foreach (var cliente in Clientes)
                     {
                         <option value="@cliente.ClienteId">@cliente.Nombres</option>
