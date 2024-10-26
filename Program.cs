@@ -12,8 +12,8 @@ namespace RegistroTecnicos
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var ConStr = builder.Configuration.GetConnectionString("ConStr");
-            builder.Services.AddDbContextFactory<Context>(c => c.UseSqlite(ConStr));
+            var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
+            builder.Services.AddDbContextFactory<Context>(c => c.UseSqlServer(ConStr));
 
             //Inyeccion de los  servicios (service)
 
