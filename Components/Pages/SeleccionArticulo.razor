@@ -1,11 +1,9 @@
-﻿<div class="col-auto input-group align-items-center">
+﻿﻿<div class="col-auto input-group align-items-center">
     <InputSelect class="form-select" @bind-Value="ArticuloId">
         <option disabled value="0">--- Seleccione un Articulo ---</option>
         @foreach (var articulo in Articulos)
         {
-            <option value="@articulo.ArticulosId">@($"{articulo.ArticulosId}- {articulo.Descripcion} ({articulo.Existencia})")</option>
-
-           
+            <option value="@articulo.ArticulosId">@articulo.ArticulosId -- @articulo.Descripcion -- (@articulo.Existencia )</option>
         }
     </InputSelect>
 
@@ -52,11 +50,11 @@
             {
                 if (ArticuloElegido.Existencia < Cantidad)
                 {
-                    MensajeError = "La cantidad de Articulo que solicita es mayor a la existente";
+                    MensajeError = "La cantidad que solicita es mayor a la existente";
                 }
                 else
                 {
-                   
+                    // Asegurarse de invocar el callback con los datos correctos
                     await ArticuloSeleccionado.InvokeAsync((ArticuloElegido, Cantidad));
                 }
             }
