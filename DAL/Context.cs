@@ -9,7 +9,6 @@ namespace RegistroTecnicos.DAL
         {
 
         }
-
         public DbSet<Tecnicos> Tecnicos { get; set; }
         public DbSet<TiposTecnicos> TiposTecnicos { get; set; }
         public DbSet<Clientes> Clientes{ get; set; }
@@ -21,6 +20,10 @@ namespace RegistroTecnicos.DAL
         public DbSet<Articulos> Articulos { get; set; }
 
         public DbSet<TrabajosDetalles> TrabajosDetalles { get; set; }
+
+        public DbSet<Cotizaciones> Cotizaciones { get; set; }
+
+        public DbSet<CotizacionesDetalle> CotizacionesDetalle { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

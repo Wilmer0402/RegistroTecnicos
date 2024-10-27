@@ -1,0 +1,130 @@
+﻿@page "/Cotizaciones/Index"
+@rendermode InteractiveServer
+@inject CotizacionesService cotizacionesService
+@inject NavigationManager navigation
+
+<PageTitle>Registro de Cotizaciones</PageTitle>
+
+<div class="container">
+    <div class="card shadow-lg">
+        <div class="card-header text-black text-center">
+            <h5><strong>Registro de Cotizaciones</strong></h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="filtrarPor">Filtrar por:</label>
+                    <InputSelect id="filtrarPor" class="form-select" @bind-Value="FiltroSeleccionado">
+                        <option value="ID">ID</option>
+                        <option value="Fecha">Fecha</option>
+                    </InputSelect>
+                </div>
+
+                <div class="col-md-6 d-flex justify-content-center mt-4">
+                    <div class="input-group">
+                        <InputText id="Busqueda" class="form-control" @bind-Value="CriterioBusqueda"
+                                   placeholder="@GetPlaceholder()"></InputText>
+                        <button @onclick="BuscarCotizaciones" class="btn btn-outline-primary bi bi-search"> Buscar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="FechaInicio">Fecha Inicio:</label>
+                    <InputDate id="FechaInicio" class="form-control" @bind-Value="FechaInicio" />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="FechaFinal">Fecha Final:</label>
+                    <div class="input-group">
+                        <InputDate id="FechaFinal" class="form-control" @bind-Value="FechaFinal" />
+                        <button class="btn btn-outline-success bi bi-arrow-counterclockwise" @onclick="RefrescarDatos"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col text-end">
+                    <a href="/Cotizaciones/Create" class="btn btn-success bi bi-plus-square mt-3"> Crear</a>
+                </div>
+            </div>
+
+            <table class="table table-light table-hover">
+                <thead class="table table-striped">
+                    <tr class="text-center">
+                        <th>Cotización Id</th>
+                        <th>Fecha</th>
+                        <th>Cliente Id</th>
+                        <th>Cliente</th>
+                        <th>Observación</th>
+                        <th>Monto</th>
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cotizacion in Cotizaciones)
+                    {
+                        <tr class="text-center">
+                            <td>@cotizacion.CotizacionId</td>
+                            <td>@cotizacion.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@cotizacion.Clientes?.ClienteId</td>
+                            <td>@cotizacion.Clientes?.Nombres</td>
+                            <td>@cotizacion.Observacion</td>
+                            <td>@cotizacion.Monto.ToString("N2")</td>
+                            <td>
+                                <a href="/Cotizaciones/Edit/@cotizacion.CotizacionId" class="btn btn-outline-dark bi bi-pencil-square"></a>
+                            </td>
+                            <td>
+                                <a href="/Cotizaciones/Delete/@cotizacion.CotizacionId" class="btn btn-outline-dark bi bi-trash"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <p><strong>Total de Cotizaciones: </strong>@Cotizaciones.Count</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<Cotizaciones> Cotizaciones { get; set; } = new List<Cotizaciones>();
+    private string FiltroSeleccionado { get; set; } = "ID";
+    private string CriterioBusqueda { get; set; } = string.Empty;
+    private DateTime? FechaInicio { get; set; }
+    private DateTime? FechaFinal { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cotizaciones = await cotizacionesService.Listar(a => true);
+    }
+
+    private async Task BuscarCotizaciones()
+    {
+        if (FiltroSeleccionado == "ID" && int.TryParse(CriterioBusqueda, out int id))
+        {
+            Cotizaciones = await cotizacionesService.Listar(a => a.CotizacionId == id);
+        }
+        else if (FiltroSeleccionado == "Fecha" && FechaInicio.HasValue && FechaFinal.HasValue)
+        {
+            Cotizaciones = await cotizacionesService.Listar(a =>
+                a.Fecha.Date >= FechaInicio.Value.Date && a.Fecha.Date <= FechaFinal.Value.Date);
+        }
+    }
+
+    private async Task RefrescarDatos()
+    {
+        Cotizaciones = await cotizacionesService.Listar(a => true);
+        CriterioBusqueda = string.Empty;
+        FechaInicio = null;
+        FechaFinal = null;
+    }
+
+    private string GetPlaceholder()
+    {
+        return FiltroSeleccionado == "ID" ? "Buscar por ID" : "Buscar por Fecha";
+    }
+}

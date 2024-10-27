@@ -12,8 +12,8 @@ namespace RegistroTecnicos
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var ConStr = builder.Configuration.GetConnectionString("ConStr");
-            builder.Services.AddDbContext<Context>(c => c.UseSqlite(ConStr));
+            var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
+            builder.Services.AddDbContextFactory<Context>(c => c.UseSqlServer(ConStr));
 
             //Inyeccion de los  servicios (service)
 
@@ -23,6 +23,7 @@ namespace RegistroTecnicos
             builder.Services.AddScoped<TrabajosService>();
             builder.Services.AddScoped<PrioridadesService>();
             builder.Services.AddScoped<ArticulosService>();
+            builder.Services.AddScoped<CotizacionesService>();
            
 
             // Add services to the container.
